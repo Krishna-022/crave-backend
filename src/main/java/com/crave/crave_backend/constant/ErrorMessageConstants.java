@@ -17,7 +17,7 @@ public interface ErrorMessageConstants {
 	String INVALID_IMAGE_TYPE = "Invalid image type";
 	
 	String USAGE_OF_INVALID_REFRESH_TOKEN = "Usage of invalid refresh token";
-	
+
 	String LARGE_IMAGE = "Image too large";
 	
 	String IMAGE_READ_FAILED = "Failed to read image";
