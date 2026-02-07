@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?> <!--Just tells the parser how to read the file.--> 
+<configuration> <!--Root container, Everything inside defines the logging system-->
+
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{36} - %msg%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder> <!--encoder takes a log event, applies the pattern and converts to text bytes -->
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

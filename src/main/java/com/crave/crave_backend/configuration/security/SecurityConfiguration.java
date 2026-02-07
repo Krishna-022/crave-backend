@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.crave.crave_backend.configuration.logging.RequestCorrelationFilter;
 import com.crave.crave_backend.constant.ApiPathConstants;
 
 @Configuration
@@ -23,6 +25,9 @@ public class SecurityConfiguration {
 	
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
+	
+	@Autowired
+	private RequestCorrelationFilter requestCorrelationFilter;
 	
 	@Bean
 	public SecurityFilterChain customSecurityFilterChain(HttpSecurity httpSecurity) {
@@ -39,7 +44,8 @@ public class SecurityConfiguration {
 				.requestMatchers(HttpMethod.POST, ApiPathConstants.PublicApiRoutes.REFRESH_TOKEN).permitAll()
 				.anyRequest().authenticated());
 		
-		httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+					.addFilterBefore(requestCorrelationFilter, JwtAuthenticationFilter.class);
 		
 		return httpSecurity.build();
 	}
