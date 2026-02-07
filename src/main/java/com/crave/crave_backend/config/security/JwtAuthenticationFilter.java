@@ -1,7 +1,6 @@
-package com.crave.crave_backend.configuration.security;
+package com.crave.crave_backend.config.security;
 
 import java.io.IOException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,11 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
-	@Autowired
-	private JwtUtils jwtUtils;
+	private final JwtUtils jwtUtils;
 	
-	@Autowired
-	private HandlerExceptionResolver handlerExceptionResolver; 
+	private final HandlerExceptionResolver handlerExceptionResolver; 
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -50,5 +47,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			SecurityContextHolder.clearContext();
 			handlerExceptionResolver.resolveException(request, response, null, ex);
 		}
+	}
+
+	public JwtAuthenticationFilter(JwtUtils jwtUtils, HandlerExceptionResolver handlerExceptionResolver) {
+		this.jwtUtils = jwtUtils;
+		this.handlerExceptionResolver = handlerExceptionResolver;
 	}
 }

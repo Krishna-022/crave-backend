@@ -1,4 +1,4 @@
-package com.crave.crave_backend.configuration.security;
+package com.crave.crave_backend.config.security;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

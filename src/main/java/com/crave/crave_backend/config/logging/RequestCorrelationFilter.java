@@ -1,4 +1,4 @@
-package com.crave.crave_backend.configuration.logging;
+package com.crave.crave_backend.config.logging;
 
 import java.io.IOException;
 import java.util.UUID;
