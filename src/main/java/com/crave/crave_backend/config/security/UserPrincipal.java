@@ -1,4 +1,4 @@
-package com.crave.crave_backend.configuration.security;
+package com.crave.crave_backend.config.security;
 
 public class UserPrincipal {
 	
