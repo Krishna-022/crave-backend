@@ -1,6 +1,5 @@
-package com.crave.crave_backend.configuration.security;
+package com.crave.crave_backend.config.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.crave.crave_backend.configuration.logging.RequestCorrelationFilter;
+import com.crave.crave_backend.config.logging.RequestCorrelationFilter;
 import com.crave.crave_backend.constant.ApiPathConstants;
 
 @Configuration
@@ -23,11 +22,9 @@ import com.crave.crave_backend.constant.ApiPathConstants;
 @EnableWebSecurity
 public class SecurityConfiguration {
 	
-	@Autowired
-	private JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	
-	@Autowired
-	private RequestCorrelationFilter requestCorrelationFilter;
+	private final RequestCorrelationFilter requestCorrelationFilter;
 	
 	@Bean
 	public SecurityFilterChain customSecurityFilterChain(HttpSecurity httpSecurity) {
@@ -60,5 +57,11 @@ public class SecurityConfiguration {
 	    return username -> {
 	        throw new UsernameNotFoundException("JWT-based authentication only");
 	    };
+	}
+
+	public SecurityConfiguration(JwtAuthenticationFilter jwtAuthenticationFilter,
+			RequestCorrelationFilter requestCorrelationFilter) {
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+		this.requestCorrelationFilter = requestCorrelationFilter;
 	}
 }
