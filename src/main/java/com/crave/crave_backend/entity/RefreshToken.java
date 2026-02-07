@@ -25,7 +25,6 @@ public class RefreshToken {
 	private LocalDateTime updatedAt;
 
 	public RefreshToken(String refreshTokenHash, Long userId) {
-		super();
 		this.refreshTokenHash = refreshTokenHash;
 		this.userId = userId;
 	}

@@ -23,8 +23,8 @@ public class UserService {
 		
 		try {
 			userId = userRepository.save(user).getId();
-		} catch (DataIntegrityViolationException ex) {
-			throw PersistenceExceptionTranslator.translateUserDataIntegrityViolation(ex, user);
+		} catch (DataIntegrityViolationException dataIntegrityViolationException) {
+			throw PersistenceExceptionTranslator.translateUserDataIntegrityViolation(dataIntegrityViolationException, user);
 		}
 		return userId;
 	}

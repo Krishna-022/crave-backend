@@ -11,8 +11,8 @@ import com.crave.crave_backend.exception.EntityConflictException;
 
 public class PersistenceExceptionTranslator {
 	
-	public static EntityConflictException translateUserDataIntegrityViolation(DataIntegrityViolationException ex, User user) {
-		String info = ex.getMostSpecificCause().toString().toLowerCase();
+	public static EntityConflictException translateUserDataIntegrityViolation(DataIntegrityViolationException dataIntegrityViolationException, User user) {
+		String info = dataIntegrityViolationException.getMostSpecificCause().toString().toLowerCase();
 		String entity = user.getClass().getSimpleName();
 		List<String> messageList = new ArrayList<>();
 		List<String> conflictingFieldsList = new ArrayList<String>();
