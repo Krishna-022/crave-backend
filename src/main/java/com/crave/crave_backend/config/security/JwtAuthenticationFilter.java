@@ -7,6 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+
+import com.crave.crave_backend.constant.ApiPathConstants;
 import com.crave.crave_backend.constant.SecurityConstants;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -24,10 +26,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-				
-		String authHeader = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 		
-		if (authHeader == null || !authHeader.startsWith(SecurityConstants.BEARER_PREFIX)) {
+		String authHeader = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
+				
+		if (authHeader == null || !authHeader.startsWith(SecurityConstants.BEARER_PREFIX) || request.getServletPath().equals(ApiPathConstants.Auth.BASE)) {
 			filterChain.doFilter(request, response);
 			return;
 		}

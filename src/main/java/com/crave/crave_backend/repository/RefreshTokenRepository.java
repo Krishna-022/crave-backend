@@ -23,4 +23,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
 			      and r.refreshTokenHash = :oldHash
 			""")
 	int rotateToken(Long userId, String oldHash, String newHash);
+
+	Integer deleteByRefreshTokenHash(String refreshTokenHash);
 }
