@@ -26,10 +26,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+				
 		String authHeader = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 				
-		if (authHeader == null || !authHeader.startsWith(SecurityConstants.BEARER_PREFIX) || request.getServletPath().equals(ApiPathConstants.Auth.BASE)) {
+		if (authHeader == null || !authHeader.startsWith(SecurityConstants.BEARER_PREFIX) || request.getServletPath().startsWith(ApiPathConstants.Auth.BASE)) {
 			filterChain.doFilter(request, response);
 			return;
 		}

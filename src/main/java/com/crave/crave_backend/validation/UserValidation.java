@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import com.crave.crave_backend.constant.EntityConflictLogConstants;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
+import com.crave.crave_backend.constant.LogEventConstants;
 import com.crave.crave_backend.entity.User;
 import com.crave.crave_backend.exception.EntityConflictException;
 import com.crave.crave_backend.repository.UserRepository;
@@ -33,7 +34,7 @@ public class UserValidation {
 		            conflictingFieldsList.add(EntityConflictLogConstants.EMAIL);
 		        }
 			}
-			throw new EntityConflictException(messageList, conflictingFieldsList, EntityConflictLogConstants.USER);
+			throw new EntityConflictException(messageList, conflictingFieldsList, LogEventConstants.REGISTRATION_FAILED);
 		}
 	}
 

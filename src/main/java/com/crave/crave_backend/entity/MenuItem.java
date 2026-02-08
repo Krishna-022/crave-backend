@@ -28,6 +28,28 @@ public class MenuItem {
 	@Column(nullable = false)
 	@Digits(integer = 6, fraction = 2)
 	private BigDecimal price;
+	
+	@Column(columnDefinition = "TEXT", nullable = false)
+	private String description;
+	
+	@Column(columnDefinition = "BYTEA")
+	private byte[] image;
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
 
 	@CreationTimestamp
 	@Column(updatable = false)

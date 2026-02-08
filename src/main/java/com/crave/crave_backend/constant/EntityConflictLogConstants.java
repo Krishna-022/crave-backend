@@ -9,8 +9,4 @@ public interface EntityConflictLogConstants {
 	String NAME = "name";
 
 	String USER_ID = "user id";
-
-	String USER = "User registration failed";
-
-	String RESTAURANT = "Restaurant registration failed";
 }

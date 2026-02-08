@@ -11,11 +11,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.crave.crave_backend.config.security.SecurityUtils;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.dto.out.ErrorResponseOutDto;
 import com.crave.crave_backend.exception.EntityConflictException;
+import com.crave.crave_backend.exception.EntityNotFoundException;
 import com.crave.crave_backend.exception.ExpiredRefreshJwtException;
 import com.crave.crave_backend.exception.InvalidRefreshTokenException;
+import com.crave.crave_backend.exception.UnauthorizedException;
 
 import io.jsonwebtoken.JwtException;
 
@@ -27,7 +30,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(EntityConflictException.class)
 	public ResponseEntity<ErrorResponseOutDto> handleEntityConflictException(
 			EntityConflictException entityConflictException) {
-		log.warn("event={} reason=conflicting fields {}", entityConflictException.getLogMessage(),
+		log.warn("event={}, conflicting fields={}", entityConflictException.getLogMessage(),
 				entityConflictException.getConflictingFieldsList());
 		return ResponseEntity.status(HttpStatus.CONFLICT)
 				.body(new ErrorResponseOutDto(entityConflictException.getMessageList()));
@@ -36,24 +39,40 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<ErrorResponseOutDto> handleBadCredentialsException(
 			BadCredentialsException badCredentialsException) {
-		log.warn("event=User login failed reason=Bad credentials");
+		log.warn("event=User login failed, reason=Bad credentials");
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(new ErrorResponseOutDto(List.of(badCredentialsException.getMessage())));
+	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<ErrorResponseOutDto> handleEntityNotFoundException(
+			EntityNotFoundException entityNotFoundException) {
+		log.warn("event={}, entity not found={}, IdUsed={}", entityNotFoundException.getLogEvent(), entityNotFoundException.getEntity(), entityNotFoundException.getId());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new ErrorResponseOutDto(List.of(entityNotFoundException.getMessage())));
 	}
 	
 	@ExceptionHandler(InvalidRefreshTokenException.class)
 	public ResponseEntity<ErrorResponseOutDto> handleInvalidRefreshTokenException(
 			InvalidRefreshTokenException invalidRefreshTokenException) {
-		log.warn("event={} user={}", ErrorMessageConstants.USAGE_OF_INVALID_REFRESH_TOKEN , invalidRefreshTokenException.getUserId());
+		log.warn("event={},  user={}", ErrorMessageConstants.USAGE_OF_INVALID_REFRESH_TOKEN , invalidRefreshTokenException.getUserId());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(new ErrorResponseOutDto(List.of(invalidRefreshTokenException.getMessage())));
 	}
 	
 	@ExceptionHandler(ExpiredRefreshJwtException.class)
 	public ResponseEntity<ErrorResponseOutDto> handleExpiredRefreshJwtException(ExpiredRefreshJwtException expiredRefreshJwtException) {
-		log.warn("event=Refresh token expired userId={}", expiredRefreshJwtException.getUserId());
+		log.warn("event=Refresh token expired, userId={}", expiredRefreshJwtException.getUserId());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(new ErrorResponseOutDto(List.of(ErrorMessageConstants.UNAUTHORIZED)));
+	}
+	
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<ErrorResponseOutDto> handleUnauthorizedException(
+			UnauthorizedException UnauthorizedException) {
+		log.warn("event={}, user={}", UnauthorizedException.getMessage(), SecurityUtils.getCurrentUserId());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(new ErrorResponseOutDto(List.of(UnauthorizedException.getMessage())));
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)

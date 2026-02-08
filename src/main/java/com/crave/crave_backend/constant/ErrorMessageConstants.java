@@ -22,7 +22,9 @@ public interface ErrorMessageConstants {
 	
 	String IMAGE_READ_FAILED = "Failed to read image";
 	
-	String ENTITY_NOT_FOUND = "%S not found";
+	String USER_NOT_FOUND = "User not found";
 	
 	String UNAUTHORIZED = "Authentication failed";
+
+	String IMAGE_REQUIRED = "Image is required";
 }
