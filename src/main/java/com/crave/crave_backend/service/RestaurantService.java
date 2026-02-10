@@ -93,7 +93,7 @@ public class RestaurantService {
 			throw PersistenceExceptionTranslator.translateRestaurantDataIntegrityViolation(ex, restaurant);
 		}
 		
-		MenuCategory menuCategory = new MenuCategory(restaurantId, registerRestaurantInDto.getMenuCategoryName());
+		MenuCategory menuCategory = new MenuCategory(restaurantId, registerRestaurantInDto.getMenuCategoryName(), 1);
 		Long menuCategoryId =  menuCategoryRepository.save(menuCategory).getId();
 		MenuItem menuItem = MenuItemMapper.toEntity(menuCategoryId, registerRestaurantInDto, validatedImages);
 		menuItemRepository.save(menuItem);

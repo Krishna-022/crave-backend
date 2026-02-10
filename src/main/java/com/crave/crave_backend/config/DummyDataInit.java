@@ -72,6 +72,7 @@ public class DummyDataInit implements CommandLineRunner {
 			MenuCategory category = new MenuCategory();
 			category.setRestaurantId(restaurant.getId());
 			category.setName("Main Course");
+			category.setMenuItemCount(1);
 
 			category = menuCategoryRepo.save(category);
 
