@@ -11,8 +11,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.dto.out.ErrorResponseOutDto;
 import com.crave.crave_backend.exception.EntityConflictException;
+import com.crave.crave_backend.exception.ExpiredRefreshJwtException;
+import com.crave.crave_backend.exception.InvalidRefreshTokenException;
+
+import io.jsonwebtoken.JwtException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -36,6 +41,21 @@ public class GlobalExceptionHandler {
 				.body(new ErrorResponseOutDto(List.of(badCredentialsException.getMessage())));
 	}
 	
+	@ExceptionHandler(InvalidRefreshTokenException.class)
+	public ResponseEntity<ErrorResponseOutDto> handleInvalidRefreshTokenException(
+			InvalidRefreshTokenException invalidRefreshTokenException) {
+		log.warn("event={} user={}", ErrorMessageConstants.USAGE_OF_INVALID_REFRESH_TOKEN , invalidRefreshTokenException.getUserId());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(new ErrorResponseOutDto(List.of(invalidRefreshTokenException.getMessage())));
+	}
+	
+	@ExceptionHandler(ExpiredRefreshJwtException.class)
+	public ResponseEntity<ErrorResponseOutDto> handleExpiredRefreshJwtException(ExpiredRefreshJwtException expiredRefreshJwtException) {
+		log.warn("event=Refresh token expired userId={}", expiredRefreshJwtException.getUserId());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(new ErrorResponseOutDto(List.of(ErrorMessageConstants.UNAUTHORIZED)));
+	}
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponseOutDto> handleMethodArgumentNotValidException(
 			MethodArgumentNotValidException methodArgumentNotValidException) {
@@ -48,5 +68,12 @@ public class GlobalExceptionHandler {
 			messageList.add(message);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseOutDto(messageList));
+	}
+	
+	@ExceptionHandler(JwtException.class)
+	public ResponseEntity<ErrorResponseOutDto> handleJwtException(JwtException jwtException) {
+		log.warn("event=Jwt authentication failed");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(new ErrorResponseOutDto(List.of(ErrorMessageConstants.UNAUTHORIZED)));
 	}
 }

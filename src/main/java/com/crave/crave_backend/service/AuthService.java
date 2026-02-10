@@ -9,14 +9,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.crave.crave_backend.config.security.JwtUtils;
+import com.crave.crave_backend.config.security.SecurityUtils;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.constant.SecurityConstants;
 import com.crave.crave_backend.dto.in.LogInInDto;
 import com.crave.crave_backend.dto.out.LogInOutDto;
 import com.crave.crave_backend.entity.RefreshToken;
 import com.crave.crave_backend.entity.User;
+import com.crave.crave_backend.exception.ExpiredRefreshJwtException;
+import com.crave.crave_backend.exception.InvalidRefreshTokenException;
 import com.crave.crave_backend.repository.RefreshTokenRepository;
 import com.crave.crave_backend.repository.UserRepository;
+
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 
 @Component
@@ -60,6 +65,39 @@ public class AuthService {
 		return new LogInOutDto(accessToken, refreshToken);
 	}
 
+	public Long verifyRefreshToken(String refreshToken) {
+		try {
+			return jwtUtils.verifyToken(refreshToken);
+		} catch (ExpiredJwtException ex) {
+			Long userId = SecurityUtils.getCurrentUserId();
+			Integer deletedRowsCount = refreshTokenRepository.deleteByRefreshTokenHash((jwtUtils.hashRefreshToken(refreshToken)));
+			
+			if (deletedRowsCount > 0) {
+				throw new ExpiredRefreshJwtException(ErrorMessageConstants.UNAUTHORIZED, userId);
+			}
+			else {
+				refreshTokenRepository.deleteByUserId(userId);
+				throw new InvalidRefreshTokenException(ErrorMessageConstants.UNAUTHORIZED, userId);
+			}
+		}
+	}
+
+	@Transactional(noRollbackFor = InvalidRefreshTokenException.class)
+	public LogInOutDto refreshUserSession(String refreshToken, Long userId) {
+		String oldRefreshTokenHash = jwtUtils.hashRefreshToken(refreshToken);
+		String newRefreshToken = jwtUtils.getToken(userId, SecurityConstants.REFRESH_TOKEN_EXPIRATION);
+		String newRefreshTokenHash = jwtUtils.hashRefreshToken(newRefreshToken);
+		
+		Integer count = refreshTokenRepository.rotateToken(userId, oldRefreshTokenHash, newRefreshTokenHash);
+		
+		if (count == 0) {
+			refreshTokenRepository.deleteByUserId(userId);
+			throw new InvalidRefreshTokenException(ErrorMessageConstants.UNAUTHORIZED, userId);
+		}
+		String accessToken = jwtUtils.getToken(userId, SecurityConstants.ACCESS_TOKEN_EXPIRATION);
+		return new LogInOutDto(accessToken, newRefreshToken);
+	}
+	
 	public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
 			RefreshTokenRepository refreshTokenRepository, JwtUtils jwtUtils) {
 		this.userRepository = userRepository;
