@@ -32,7 +32,7 @@ public class AuthController {
 		log.info("event=Request received for refresh token rotation");
 		Long userId = authService.verifyRefreshToken(refreshTokenInDto.getRefreshToken());
 		LogInOutDto logInOutDto = authService.refreshUserSession(refreshTokenInDto.getRefreshToken(), userId);
-		log.info("event=Refresh token rotation successful userId={}", userId);
+		log.info("event=Refresh token rotation successful, userId={}", userId);
 		return logInOutDto;
 	}
 	

@@ -17,6 +17,7 @@ import com.crave.crave_backend.dto.out.ErrorResponseOutDto;
 import com.crave.crave_backend.exception.EntityConflictException;
 import com.crave.crave_backend.exception.EntityNotFoundException;
 import com.crave.crave_backend.exception.ExpiredRefreshJwtException;
+import com.crave.crave_backend.exception.InvalidImageException;
 import com.crave.crave_backend.exception.InvalidRefreshTokenException;
 import com.crave.crave_backend.exception.UnauthorizedException;
 
@@ -89,10 +90,18 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseOutDto(messageList));
 	}
 	
+	@ExceptionHandler(InvalidImageException.class)
+	public ResponseEntity<ErrorResponseOutDto> handleInvalidImageException (InvalidImageException invalidImageException) {
+		log.warn("event={}, reason={}", invalidImageException.getLogEvent(), invalidImageException.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(new ErrorResponseOutDto(List.of(invalidImageException.getMessage())));
+	}
+	
 	@ExceptionHandler(JwtException.class)
 	public ResponseEntity<ErrorResponseOutDto> handleJwtException(JwtException jwtException) {
 		log.warn("event=Jwt authentication failed");
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(new ErrorResponseOutDto(List.of(ErrorMessageConstants.UNAUTHORIZED)));
 	}
+	
 }

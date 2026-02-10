@@ -22,11 +22,17 @@ public class RestaurantValidation {
 
 	public List<byte[]> validateRestaurantRegistrationDetails(@Valid RegisterRestaurantInDto registerRestaurantInDto) {
 		validateRegistrationDetails(registerRestaurantInDto.getContactNumber(), registerRestaurantInDto.getEmail(), registerRestaurantInDto.getName());
-		
-		List<byte[]> validatedImages = new ArrayList<>(List.of(
-			    validateImage(registerRestaurantInDto.getRestaurantImage()),
-			    validateImage(registerRestaurantInDto.getMenuItemImage())
-			));
+		List<byte[]> validatedImages;
+		try {
+			validatedImages = new ArrayList<>(List.of(
+				 validateImage(registerRestaurantInDto.getRestaurantImage()),
+				 validateImage(registerRestaurantInDto.getMenuItemImage())
+				));
+		} catch (InvalidImageException invalidImageException) {
+			invalidImageException.setLogEvent(LogEventConstants.REGISTRATION_FAILED);
+			throw invalidImageException;
+		}
+
 		return validatedImages;
 	}
 	
