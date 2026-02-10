@@ -7,4 +7,6 @@ public interface DatabaseConstraintNames {
 	String UNIQUE_EMAIL = "uniqueemailconstraintcrave";
 	
 	String UNIQUE_NAME = "uniquenameconstraintcrave";
+	
+	String UNIQUE_CATEGORY_NAMES = "uniquerestaurantidandcategoryname";
 }
