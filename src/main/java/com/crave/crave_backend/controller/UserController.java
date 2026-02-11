@@ -24,7 +24,7 @@ public class UserController {
 
 	private final UserService userService;
 	
-	private Logger log = LoggerFactory.getLogger(UserController.class);
+	private final Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

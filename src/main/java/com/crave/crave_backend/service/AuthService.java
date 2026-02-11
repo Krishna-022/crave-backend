@@ -7,9 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.crave.crave_backend.config.security.JwtUtils;
-import com.crave.crave_backend.config.security.SecurityUtils;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.constant.SecurityConstants;
 import com.crave.crave_backend.dto.in.LogInInDto;
@@ -20,7 +18,6 @@ import com.crave.crave_backend.exception.ExpiredRefreshJwtException;
 import com.crave.crave_backend.exception.InvalidRefreshTokenException;
 import com.crave.crave_backend.repository.RefreshTokenRepository;
 import com.crave.crave_backend.repository.UserRepository;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 
@@ -40,7 +37,7 @@ public class AuthService {
 	@Transactional          // Intentionally designed to mitigate timing attacks
 	public LogInOutDto authenticateAndLogin(@Valid LogInInDto loginInDto) {
 		String givenPassword = loginInDto.getPassword();
-		String userPassword = "dummyHash";
+		String userPassword = passwordEncoder.encode("dummyHash");
 		User user = new User();
 		Optional<User> userOptional = userRepository.findByContactNumber(loginInDto.getContactNumber());
 
@@ -69,13 +66,12 @@ public class AuthService {
 		try {
 			return jwtUtils.verifyToken(refreshToken);
 		} catch (ExpiredJwtException ex) {
-			Long userId = SecurityUtils.getCurrentUserId();
+			Long userId = Long.parseLong(ex.getClaims().getSubject());
 			Integer deletedRowsCount = refreshTokenRepository.deleteByRefreshTokenHash((jwtUtils.hashRefreshToken(refreshToken)));
 			
 			if (deletedRowsCount > 0) {
 				throw new ExpiredRefreshJwtException(ErrorMessageConstants.UNAUTHORIZED, userId);
-			}
-			else {
+			} else {
 				refreshTokenRepository.deleteByUserId(userId);
 				throw new InvalidRefreshTokenException(ErrorMessageConstants.UNAUTHORIZED, userId);
 			}

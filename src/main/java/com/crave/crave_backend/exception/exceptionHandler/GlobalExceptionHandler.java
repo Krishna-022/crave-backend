@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
 			EntityNotFoundException entityNotFoundException) {
 		log.warn("event={}, entity not found={}, IdUsed={}", entityNotFoundException.getLogEvent(), entityNotFoundException.getEntity(), entityNotFoundException.getId());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body(new ErrorResponseOutDto(List.of(entityNotFoundException.getMessage())));
+				.body(new ErrorResponseOutDto(List.of(String.format(entityNotFoundException.getMessage(), entityNotFoundException.getEntity()))));
 	}
 	
 	@ExceptionHandler(InvalidRefreshTokenException.class)

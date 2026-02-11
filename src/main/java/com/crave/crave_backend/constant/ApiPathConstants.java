@@ -22,9 +22,29 @@ public final class ApiPathConstants {
 		
 		public static final String BASE = "/restaurant";
 		
-		public static final String BY_ID = "/{id}";
+		public static final String BY_ID = "/{restaurantId}";
+		
+		public static final String MENU = BY_ID + "/menu-category";
 		
 		public static final String RESTAURANT_IMAGE = BY_ID + "/image";
+	}
+	
+	public static final class MenuCategory {
+		
+		public static final String BASE = "/menu-category";
+		
+		public static final String BY_ID = "/{menuCategoryId}";
+		
+		public static final String CATEGORY_ITEMS = BY_ID + "/menu-item";
+	}
+	
+	public static final class MenuItem {
+		
+		public static final String BASE = "/menu-item";
+		
+		public static final String BY_ID = "/{menuItemId}";
+		
+		public static final String MENU_ITEM_IMAGE = BY_ID + "/image";
 	}
 	
 	public static final class PublicApiRoutes {

@@ -24,11 +24,11 @@ public class CursorPage<T> {
 		this.page = page;
 	}
 
-	public Boolean getHasNext() {
+	public Boolean getHasMore() {
 		return hasMore;
 	}
 
-	public void setHasNext(Boolean hasNext) {
+	public void setHasMore(Boolean hasNext) {
 		this.hasMore = hasNext;
 	}
 

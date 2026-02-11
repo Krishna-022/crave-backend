@@ -56,8 +56,8 @@ public class RegisterRestaurantInDto {
 	@NotNull(message = "Menu item image is required")
 	private MultipartFile menuItemImage;
 
-	@NotBlank(message = "Menu item discription is required")
-	@Size(max = 500, message = "Menu item discription cannot exceed 500 letters")
+	@NotBlank(message = "Menu item description is required")
+	@Size(max = 500, message = "Menu item description cannot exceed 500 letters")
 	private String menuItemDescription;
 	
 	@NotNull(message = "Price for menu item is required")

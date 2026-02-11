@@ -28,8 +28,8 @@ public class MenuCategory {
 	@Column(nullable = false)
 	private String name;
 	
-	@Column(nullable = false, columnDefinition = "INT CHECK (item_count > 0)")
-	private Integer MenuItemCount;
+	@Column(nullable = false, columnDefinition = "INT CHECK (menu_item_count > 0)")
+	private Integer menuItemCount;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -39,11 +39,11 @@ public class MenuCategory {
 	private LocalDateTime updatedAt;
 
 	public Integer getMenuItemCount() {
-		return MenuItemCount;
+		return menuItemCount;
 	}
 
-	public void setMenuItemCount(Integer itemCount) {
-		this.MenuItemCount = itemCount;
+	public void setMenuItemCount(Integer menuItemCount) {
+		this.menuItemCount = menuItemCount;
 	}
 
 	public LocalDateTime getCreatedAt() {
@@ -74,10 +74,10 @@ public class MenuCategory {
 		this.name = name;
 	}
 
-	public MenuCategory(Long restaurantId, String name, Integer MenuItemCount) {
+	public MenuCategory(Long restaurantId, String name, Integer menuItemCount) {
 		this.restaurantId = restaurantId;
 		this.name = name;
-		this.MenuItemCount = MenuItemCount;
+		this.menuItemCount = menuItemCount;
 	}
 
 	public MenuCategory() {

@@ -64,7 +64,7 @@ public class DummyDataInit implements CommandLineRunner {
 			restaurant.setCityName("City" + i);
 			restaurant.setStateName("State" + i);
 			restaurant.setPinCode("40000" + (i % 10));
-			restaurant.setImage(loadImage("Dummy_Restaurant_Image.jpeg"));
+			restaurant.setImage(loadImage("dummyImages/Dummy_Restaurant_Image.jpeg"));
 
 			restaurant = restaurantRepo.save(restaurant);
 
@@ -82,7 +82,7 @@ public class DummyDataInit implements CommandLineRunner {
 			item.setName("Item " + i);
 			item.setPrice(new BigDecimal("199.99"));
 			item.setDescription("Test item description");
-			item.setImage(loadImage("Menu_Item_Image.jpg"));
+			item.setImage(loadImage("dummyImages/Menu_Item_Image.jpg"));
 
 			menuItemRepo.save(item);
 		}
