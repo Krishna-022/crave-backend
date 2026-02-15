@@ -11,6 +11,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	List<User> findByContactNumberOrEmail(String contactNumber, String Email);
 	
+	boolean existsById(Long userId);
+	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	Optional<User> findByContactNumber(String contactNumber);
 }
