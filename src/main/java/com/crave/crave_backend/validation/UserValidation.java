@@ -3,7 +3,7 @@ package com.crave.crave_backend.validation;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
-import com.crave.crave_backend.constant.EntityConflictLogConstants;
+import com.crave.crave_backend.constant.EntityAndFieldConstants;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.constant.LogEventConstants;
 import com.crave.crave_backend.entity.User;
@@ -26,12 +26,12 @@ public class UserValidation {
 			for (int i = 0; i < userList.size(); i++) {
 				User user = userList.get(i);
 				if (contactNumber.equals(user.getContactNumber())) {
-		            messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.CONTACT_NUMBER, contactNumber));
-		            conflictingFieldsList.add(EntityConflictLogConstants.CONTACT_NUMBER);
+		            messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.CONTACT_NUMBER, contactNumber));
+		            conflictingFieldsList.add(EntityAndFieldConstants.CONTACT_NUMBER);
 		        }
 				if (email.equals(user.getEmail())) {
-		            messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.EMAIL, email));
-		            conflictingFieldsList.add(EntityConflictLogConstants.EMAIL);
+		            messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.EMAIL, email));
+		            conflictingFieldsList.add(EntityAndFieldConstants.EMAIL);
 		        }
 			}
 			throw new EntityConflictException(messageList, conflictingFieldsList, LogEventConstants.REGISTRATION_FAILED);

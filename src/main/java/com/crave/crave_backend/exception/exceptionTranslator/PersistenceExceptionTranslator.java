@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 import com.crave.crave_backend.constant.DatabaseConstraintNames;
-import com.crave.crave_backend.constant.EntityConflictLogConstants;
+import com.crave.crave_backend.constant.EntityAndFieldConstants;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.constant.LogEventConstants;
 import com.crave.crave_backend.entity.Restaurant;
@@ -20,12 +20,12 @@ public final class PersistenceExceptionTranslator {
 		List<String> conflictingFieldsList = new ArrayList<String>();
 
 		if (info.contains(DatabaseConstraintNames.UNIQUE_CONTACT_NUMBER)) {
-			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.CONTACT_NUMBER, user.getContactNumber()));
-			conflictingFieldsList.add(EntityConflictLogConstants.CONTACT_NUMBER);
+			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.CONTACT_NUMBER, user.getContactNumber()));
+			conflictingFieldsList.add(EntityAndFieldConstants.CONTACT_NUMBER);
 		} 
 		else if (info.contains(DatabaseConstraintNames.UNIQUE_EMAIL)) {
-			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.EMAIL, user.getEmail()));
-			conflictingFieldsList.add(EntityConflictLogConstants.EMAIL);
+			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.EMAIL, user.getEmail()));
+			conflictingFieldsList.add(EntityAndFieldConstants.EMAIL);
 		} 
 		else {
 			messageList.add(ErrorMessageConstants.DATA_INTEGRITY_VIOLATION);
@@ -40,14 +40,14 @@ public final class PersistenceExceptionTranslator {
 		List<String> conflictingFieldsList = new ArrayList<String>();
 		
 		if (info.contains(DatabaseConstraintNames.UNIQUE_CONTACT_NUMBER)) {
-			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.CONTACT_NUMBER, restaurant.getContactNumber()));
-			conflictingFieldsList.add(EntityConflictLogConstants.CONTACT_NUMBER);
+			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.CONTACT_NUMBER, restaurant.getContactNumber()));
+			conflictingFieldsList.add(EntityAndFieldConstants.CONTACT_NUMBER);
 		} else if (info.contains(DatabaseConstraintNames.UNIQUE_EMAIL)) {
-			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.EMAIL, restaurant.getEmail()));
-			conflictingFieldsList.add(EntityConflictLogConstants.EMAIL);
+			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.EMAIL, restaurant.getEmail()));
+			conflictingFieldsList.add(EntityAndFieldConstants.EMAIL);
 		} else if (info.contains(DatabaseConstraintNames.UNIQUE_NAME)) {
-			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.NAME, restaurant.getName()));
-			conflictingFieldsList.add(EntityConflictLogConstants.NAME);
+			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.NAME, restaurant.getName()));
+			conflictingFieldsList.add(EntityAndFieldConstants.NAME);
 		} else {
 			messageList.add(ErrorMessageConstants.DATA_INTEGRITY_VIOLATION);
 		}

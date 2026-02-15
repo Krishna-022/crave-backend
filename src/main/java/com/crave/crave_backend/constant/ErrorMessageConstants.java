@@ -22,12 +22,10 @@ public interface ErrorMessageConstants {
 	
 	String IMAGE_READ_FAILED = "Failed to read image";
 	
-	String USER_NOT_FOUND = "User not found";
+	String ENTITY_NOT_FOUND = "%s not found";
 	
-	String IMAGE_NOT_FOUND = "Image not found";
-	
-	String RESTAURANT_IMAGE_NOT_FOUND = "Restaurant image not found";
-	
+	String IMAGE_NOT_FOUND = "%s image not found";
+		
 	String UNAUTHORIZED = "Authentication failed";
 
 	String IMAGE_REQUIRED = "Image is required";

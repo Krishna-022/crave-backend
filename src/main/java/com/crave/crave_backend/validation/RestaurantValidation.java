@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import com.crave.crave_backend.constant.EntityConflictLogConstants;
+import com.crave.crave_backend.constant.EntityAndFieldConstants;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.constant.LogEventConstants;
 import com.crave.crave_backend.dto.in.RegisterRestaurantInDto;
@@ -48,16 +48,16 @@ public class RestaurantValidation {
 				Restaurant restaurant = restaurantList.get(i);
 				
 				if (contactNumber.equals(restaurant.getContactNumber())) {
-		            messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.CONTACT_NUMBER, contactNumber));
-		            conflictingFieldsList.add(EntityConflictLogConstants.CONTACT_NUMBER);
+		            messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.CONTACT_NUMBER, contactNumber));
+		            conflictingFieldsList.add(EntityAndFieldConstants.CONTACT_NUMBER);
 		        }
 				if (email.equals(restaurant.getEmail())) {
-		            messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.EMAIL, email));
-		            conflictingFieldsList.add(EntityConflictLogConstants.EMAIL);
+		            messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.EMAIL, email));
+		            conflictingFieldsList.add(EntityAndFieldConstants.EMAIL);
 		        }
 				if (name.equals(restaurant.getName())) {
-					messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityConflictLogConstants.NAME, name));
-		            conflictingFieldsList.add(EntityConflictLogConstants.NAME);
+					messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.NAME, name));
+		            conflictingFieldsList.add(EntityAndFieldConstants.NAME);
 				}
 			}
 			throw new EntityConflictException(messageList, conflictingFieldsList, LogEventConstants.REGISTRATION_FAILED);

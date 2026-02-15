@@ -10,9 +10,9 @@ public class CursorPage<T> {
 	
 	private Long nextCursor;
 
-	public CursorPage(List<T> page, Boolean hasNext, Long nextCursor) {
+	public CursorPage(List<T> page, Boolean hasMore, Long nextCursor) {
 		this.page = page;
-		this.hasMore = hasNext;
+		this.hasMore = hasMore;
 		this.nextCursor = nextCursor;
 	}
 
@@ -24,12 +24,12 @@ public class CursorPage<T> {
 		this.page = page;
 	}
 
-	public Boolean getHasNext() {
+	public Boolean getHasMore() {
 		return hasMore;
 	}
 
-	public void setHasNext(Boolean hasNext) {
-		this.hasMore = hasNext;
+	public void setHasMore(Boolean hasMore) {
+		this.hasMore = hasMore;
 	}
 
 	public Long getNextCursor() {

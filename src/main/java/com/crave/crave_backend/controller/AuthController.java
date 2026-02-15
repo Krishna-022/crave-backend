@@ -17,9 +17,9 @@ import jakarta.validation.Valid;
 @RequestMapping(ApiPathConstants.Auth.BASE)
 public class AuthController {
 	
-	private AuthService authService;
+	private final AuthService authService;
 
-	private Logger log = LoggerFactory.getLogger(AuthController.class);
+	private final Logger log = LoggerFactory.getLogger(AuthController.class);
 
 	@PostMapping(ApiPathConstants.Auth.LOG_IN)
 	public LogInOutDto loginUser(@Valid @RequestBody LogInInDto loginInDto) {

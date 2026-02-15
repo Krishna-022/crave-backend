@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.crave.crave_backend.config.security.SecurityUtils;
-import com.crave.crave_backend.constant.EntityConflictLogConstants;
+import com.crave.crave_backend.constant.EntityAndFieldConstants;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.constant.LogEventConstants;
 import com.crave.crave_backend.constant.SuccessMessageConstants;
@@ -77,12 +77,12 @@ public class RestaurantService {
 		Long userId = SecurityUtils.getCurrentUserId();
 		boolean userExists = userRepository.existsById(userId);
 		if (!userExists) {
-			throw new EntityNotFoundException(LogEventConstants.REGISTRATION_FAILED, User.class.getSimpleName(), userId, ErrorMessageConstants.USER_NOT_FOUND);
+			throw new EntityNotFoundException(LogEventConstants.REGISTRATION_FAILED, User.class.getSimpleName(), userId, ErrorMessageConstants.ENTITY_NOT_FOUND);
 		}
 
 		boolean restaurantExists = restaurantRepository.existsByUserId(userId);
 		if (restaurantExists) {
-			throw new EntityConflictException(List.of(ErrorMessageConstants.RESTAURANT_LIMIT_EXCEEDED), List.of(EntityConflictLogConstants.USER_ID), LogEventConstants.REGISTRATION_FAILED);
+			throw new EntityConflictException(List.of(ErrorMessageConstants.RESTAURANT_LIMIT_EXCEEDED), List.of(EntityAndFieldConstants.USER_ID), LogEventConstants.REGISTRATION_FAILED);
 		}
 		
 		Restaurant restaurant = RestaurantMapper.toEntity(registerRestaurantInDto, validatedImages);

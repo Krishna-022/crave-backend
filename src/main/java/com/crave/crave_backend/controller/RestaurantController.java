@@ -18,8 +18,10 @@ import com.crave.crave_backend.config.security.SecurityUtils;
 import com.crave.crave_backend.constant.ApiPathConstants;
 import com.crave.crave_backend.dto.in.RegisterRestaurantInDto;
 import com.crave.crave_backend.dto.out.CursorPage;
+import com.crave.crave_backend.dto.out.MenuOutDto;
 import com.crave.crave_backend.dto.out.MessageOutDto;
 import com.crave.crave_backend.dto.out.RestaurantListViewOutDTO;
+import com.crave.crave_backend.service.MenuCategoryService;
 import com.crave.crave_backend.service.RestaurantService;
 import com.crave.crave_backend.validation.RestaurantValidation;
 import jakarta.validation.Valid;
@@ -28,11 +30,19 @@ import jakarta.validation.Valid;
 @RequestMapping(ApiPathConstants.Restaurant.BASE)
 public class RestaurantController {
 	
-	private RestaurantService restaurantService;
+	private final RestaurantService restaurantService;
 
-	private RestaurantValidation restaurantValidation;
+	private final RestaurantValidation restaurantValidation;
+	
+	private final MenuCategoryService menuCategoryService;
 
-	private Logger log = LoggerFactory.getLogger(RestaurantController.class);
+	private final Logger log = LoggerFactory.getLogger(RestaurantController.class);
+	
+	@GetMapping(ApiPathConstants.Restaurant.MENU)
+	public List<MenuOutDto> getMenu(@PathVariable Long restaurantId) {
+		log.info("event=Request received to fetch menu, restaurantId={}, userId={}", restaurantId, SecurityUtils.getCurrentUserId());
+		return menuCategoryService.getMenu(restaurantId);
+	}
 
 	@PostMapping (consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -51,17 +61,18 @@ public class RestaurantController {
 	}
 	
 	@GetMapping(ApiPathConstants.Restaurant.RESTAURANT_IMAGE)
-	public ResponseEntity<byte[]> getRestaurantImage(@PathVariable Long id) {
-		log.info("event=Request received to fetch restaurant image, restaurantId={}, userId={}", id, SecurityUtils.getCurrentUserId());
-		byte[] image = restaurantService.getRestaurantImage(id);
+	public ResponseEntity<byte[]> getRestaurantImage(@PathVariable Long restaurantId) {
+		log.info("event=Request received to fetch restaurant image, restaurantId={}, userId={}", restaurantId, SecurityUtils.getCurrentUserId());
+		byte[] image = restaurantService.getRestaurantImage(restaurantId);
 		log.info("event=Restaurant image fetched successfully");
 		return ResponseEntity.ok()
 	            .contentType(MediaType.IMAGE_JPEG)
 	            .body(image);
 	}
 
-	public RestaurantController(RestaurantService restaurantService, RestaurantValidation restaurantValidation) {
+	public RestaurantController(RestaurantService restaurantService, RestaurantValidation restaurantValidation, MenuCategoryService menuCategoryService) {
 		this.restaurantService = restaurantService;
 		this.restaurantValidation = restaurantValidation;
+		this.menuCategoryService = menuCategoryService;
 	}
 }
