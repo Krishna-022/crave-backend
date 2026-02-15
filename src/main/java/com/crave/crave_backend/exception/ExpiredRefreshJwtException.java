@@ -4,7 +4,7 @@ public class ExpiredRefreshJwtException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-private String message;
+	private String message;
 	
 	private Long userId;
 

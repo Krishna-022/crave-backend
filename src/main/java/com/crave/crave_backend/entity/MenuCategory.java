@@ -4,13 +4,18 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import com.crave.crave_backend.constant.DatabaseConstraintNames;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(uniqueConstraints = {
+		@UniqueConstraint(name = DatabaseConstraintNames.UNIQUE_CATEGORY_NAMES, columnNames = { "restaurant_id", "name" }) })
 public class MenuCategory {
 
 	@Id
@@ -22,6 +27,9 @@ public class MenuCategory {
 
 	@Column(nullable = false)
 	private String name;
+	
+	@Column(nullable = false, columnDefinition = "INT CHECK (menu_item_count > 0)")
+	private Integer menuItemCount;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -29,6 +37,14 @@ public class MenuCategory {
 
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+
+	public Integer getMenuItemCount() {
+		return menuItemCount;
+	}
+
+	public void setMenuItemCount(Integer menuItemCount) {
+		this.menuItemCount = menuItemCount;
+	}
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
@@ -58,10 +74,10 @@ public class MenuCategory {
 		this.name = name;
 	}
 
-	public MenuCategory(Long restaurantId, String name) {
-		super();
+	public MenuCategory(Long restaurantId, String name, Integer menuItemCount) {
 		this.restaurantId = restaurantId;
 		this.name = name;
+		this.menuItemCount = menuItemCount;
 	}
 
 	public MenuCategory() {
