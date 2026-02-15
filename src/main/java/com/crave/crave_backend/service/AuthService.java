@@ -61,7 +61,7 @@ public class AuthService {
 		RefreshToken refreshTokenEntity = new RefreshToken(refreshTokenHash, userId);
 		refreshTokenRepository.save(refreshTokenEntity);
 		
-		log.info("event=User login successful UserId={}", userId);
+		log.info("event=User login successful, UserId={}", userId);
 		return new LogInOutDto(accessToken, refreshToken);
 	}
 

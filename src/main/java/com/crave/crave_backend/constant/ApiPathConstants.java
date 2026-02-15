@@ -21,7 +21,10 @@ public final class ApiPathConstants {
 	public static final class Restaurant {
 		
 		public static final String BASE = "/restaurant";
-				
+		
+		public static final String BY_ID = "/{id}";
+		
+		public static final String RESTAURANT_IMAGE = BY_ID + "/image";
 	}
 	
 	public static final class PublicApiRoutes {
