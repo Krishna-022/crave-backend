@@ -53,11 +53,11 @@ public class RestaurantController {
 	}
 	
 	@GetMapping
-	public CursorPage<RestaurantListViewOutDTO> getRestaurants(@RequestParam(required = false) Long c, @RequestParam(required = true, defaultValue = "5") int l) {
-		log.info("event=Request received to browse restaurants, userId={}, cursor={}, limit={}", SecurityUtils.getCurrentUserId(), c, l);
-		CursorPage<RestaurantListViewOutDTO> page = restaurantService.getRestaurants(c, 5);
+	public CursorPage<RestaurantListViewOutDTO> getRestaurants(@RequestParam(required = false) Long cursor, @RequestParam(required = true, defaultValue = "5") int limit) {
+		log.info("event=Rquest received to browse restaurants, userId={}, cursor={}, limit={}", SecurityUtils.getCurrentUserId(), cursor, limit);
+		CursorPage<RestaurantListViewOutDTO> restaurantListViewCursorPage = restaurantService.getRestaurants(cursor, 5);
 		log.info("event=Restaurants browsing request successful, userId={}", SecurityUtils.getCurrentUserId());
-		return page;
+		return restaurantListViewCursorPage;
 	}
 	
 	@GetMapping(ApiPathConstants.Restaurant.RESTAURANT_IMAGE)
