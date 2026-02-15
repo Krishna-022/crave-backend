@@ -38,6 +38,15 @@ public class RestaurantController {
 
 	private final Logger log = LoggerFactory.getLogger(RestaurantController.class);
 	
+	@GetMapping(ApiPathConstants.Restaurant.MY)
+	public List<RestaurantListViewOutDTO> getMyRestaurants() {
+		Long userId = SecurityUtils.getCurrentUserId();
+		log.info("event=Request received to fetch current user's restaurants, userId={}", userId);
+		List<RestaurantListViewOutDTO> restaurantList = restaurantService.getMyRestaurants(userId);
+		log.info("event=Current user's restaurants fetched successfully, userId={}, count={}", userId, restaurantList.size());
+		return restaurantList;
+	}
+	
 	@GetMapping(ApiPathConstants.Restaurant.MENU)
 	public List<MenuOutDto> getMenu(@PathVariable Long restaurantId) {
 		log.info("event=Request received to fetch menu, restaurantId={}, userId={}", restaurantId, SecurityUtils.getCurrentUserId());
