@@ -7,6 +7,7 @@ import com.crave.crave_backend.constant.DatabaseConstraintNames;
 import com.crave.crave_backend.constant.EntityAndFieldConstants;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.constant.LogEventConstants;
+import com.crave.crave_backend.entity.MenuCategory;
 import com.crave.crave_backend.entity.Restaurant;
 import com.crave.crave_backend.entity.User;
 import com.crave.crave_backend.exception.EntityConflictException;
@@ -47,6 +48,25 @@ public final class PersistenceExceptionTranslator {
 			conflictingFieldsList.add(EntityAndFieldConstants.EMAIL);
 		} else if (info.contains(DatabaseConstraintNames.UNIQUE_NAME)) {
 			messageList.add(String.format(ErrorMessageConstants.ENTITY_CONFLICT, entity, EntityAndFieldConstants.NAME, restaurant.getName()));
+			conflictingFieldsList.add(EntityAndFieldConstants.NAME);
+		} else {
+			messageList.add(ErrorMessageConstants.DATA_INTEGRITY_VIOLATION);
+		}
+		return new EntityConflictException(messageList, conflictingFieldsList, LogEventConstants.REGISTRATION_FAILED);
+	}
+	
+	public static EntityConflictException translateMenuCategoryDataIntegrityViolation(
+			DataIntegrityViolationException ex, String categoryName) {
+		String info = ex.getMostSpecificCause().toString().toLowerCase();
+		List<String> messageList = new ArrayList<>();
+		List<String> conflictingFieldsList = new ArrayList<>();
+
+		if (info.contains(DatabaseConstraintNames.UNIQUE_CATEGORY_NAMES)) {
+			messageList.add(String.format(
+					ErrorMessageConstants.ENTITY_CONFLICT,
+					MenuCategory.class.getSimpleName(),
+					EntityAndFieldConstants.NAME,
+					categoryName));
 			conflictingFieldsList.add(EntityAndFieldConstants.NAME);
 		} else {
 			messageList.add(ErrorMessageConstants.DATA_INTEGRITY_VIOLATION);
