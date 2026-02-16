@@ -35,7 +35,9 @@ public class MenuItemController {
 	@GetMapping(ApiPathConstants.MenuItem.BY_ID)
 	public MenuItemListViewOutDto getMenuItem(@PathVariable Long menuItemId) {
 		log.info("event=Request received to fetch menu item, menuItemId={}, userId={}", menuItemId, SecurityUtils.getCurrentUserId());
-		return menuItemService.getMenuItem(menuItemId);
+		MenuItemListViewOutDto menuItemListViewOutDto = menuItemService.getMenuItem(menuItemId);
+		log.info("event=Menu item fetched successfully, menuItemId={}", menuItemListViewOutDto.getId());
+		return menuItemListViewOutDto;
 	}
 
 	public MenuItemController(MenuItemService menuItemService) {

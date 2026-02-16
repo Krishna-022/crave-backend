@@ -98,7 +98,13 @@ public class RestaurantService {
 		}
 		
 		MenuCategory menuCategory = new MenuCategory(restaurantId, registerRestaurantInDto.getMenuCategoryName(), 1);
-		Long menuCategoryId =  menuCategoryRepository.save(menuCategory).getId();
+		
+		Long menuCategoryId;
+		try {
+			menuCategoryId = menuCategoryRepository.save(menuCategory).getId();
+		} catch (DataIntegrityViolationException ex) {
+			throw PersistenceExceptionTranslator.translateMenuCategoryDataIntegrityViolation(ex, registerRestaurantInDto.getMenuCategoryName());
+		}
 		MenuItem menuItem = MenuItemMapper.toEntity(menuCategoryId, registerRestaurantInDto, validatedImages);
 		menuItemRepository.save(menuItem);
 		

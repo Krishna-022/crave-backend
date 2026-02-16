@@ -11,6 +11,8 @@ import com.crave.crave_backend.entity.MenuCategory;
 
 public interface MenuCategoryRepository extends JpaRepository<MenuCategory, Long> {
 	
+	boolean existsByRestaurantIdAndName(Long restaurantId, String name);
+	
 	@Query("""
 		    SELECT new com.crave.crave_backend.dto.out.MenuOutDto(
 		        c.id,

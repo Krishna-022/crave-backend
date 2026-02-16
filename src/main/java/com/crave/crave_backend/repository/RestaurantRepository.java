@@ -1,14 +1,22 @@
 package com.crave.crave_backend.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.crave.crave_backend.dto.out.RestaurantListViewOutDTO;
 import com.crave.crave_backend.entity.Restaurant;
 
+import jakarta.persistence.LockModeType;
+
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("SELECT r FROM Restaurant r WHERE r.id = :restaurantId")
+	Optional<Restaurant> findByIdForUpdate(@Param("restaurantId") Long restaurantId);
 	
 	@Query("""
 	        SELECT new com.crave.crave_backend.dto.out.RestaurantListViewOutDTO(

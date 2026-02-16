@@ -4,6 +4,8 @@ public interface ErrorMessageConstants {
 	
 	String ENTITY_CONFLICT = "%s with %s '%s' already exists";
 	
+	String FIELD_CONFLICT = "%s '%s' already exist";
+	
 	String RESTAURANT_LIMIT_EXCEEDED = "Restaurant registration limit exceeded";
 
 	String PERSISTENCE_UNKNOWN_EXCEPTION = "Server busy, please try again";

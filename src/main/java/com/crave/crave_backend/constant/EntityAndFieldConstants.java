@@ -12,5 +12,7 @@ public interface EntityAndFieldConstants {
 	
 	String MENU_CATEGORY = "Menu category";
 	
+	String MENU_CATEGORY_NAME = "Menu category name";
+	
 	String MENU_ITEM = "Menu item";
 }

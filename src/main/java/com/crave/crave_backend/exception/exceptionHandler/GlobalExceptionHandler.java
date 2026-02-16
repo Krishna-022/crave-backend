@@ -11,7 +11,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import com.crave.crave_backend.config.security.SecurityUtils;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.dto.out.ErrorResponseOutDto;
 import com.crave.crave_backend.exception.EntityConflictException;
@@ -26,7 +25,7 @@ import io.jsonwebtoken.JwtException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	
-	private Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+	private final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	@ExceptionHandler(EntityConflictException.class)
 	public ResponseEntity<ErrorResponseOutDto> handleEntityConflictException(
@@ -69,11 +68,9 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(UnauthorizedException.class)
-	public ResponseEntity<ErrorResponseOutDto> handleUnauthorizedException(
-			UnauthorizedException UnauthorizedException) {
-		log.warn("event={}, user={}", UnauthorizedException.getMessage(), SecurityUtils.getCurrentUserId());
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-				.body(new ErrorResponseOutDto(List.of(UnauthorizedException.getMessage())));
+	public ResponseEntity<ErrorResponseOutDto> handleUnauthorizedException(UnauthorizedException unauthorizedException) {
+		log.warn("event={}, unauthorized access={}", unauthorizedException.getLogEvent(), unauthorizedException.getUnauthorizedEvent());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseOutDto(List.of(unauthorizedException.getMessage())));
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -103,5 +100,4 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(new ErrorResponseOutDto(List.of(ErrorMessageConstants.UNAUTHORIZED)));
 	}
-	
 }
