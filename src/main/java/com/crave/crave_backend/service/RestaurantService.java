@@ -45,6 +45,10 @@ public class RestaurantService {
 	
 	private final Logger log = LoggerFactory.getLogger(RestaurantService.class);
 	
+	public List<RestaurantListViewOutDTO> getMyRestaurants(Long userId) {
+		return restaurantRepository.getRestaurantsByUserId(userId);
+	}
+	
 	public byte[] getRestaurantImage(Long restaurantId) {
 		byte[] image =  restaurantRepository.findRestaurantImageById(restaurantId);
 		

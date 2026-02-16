@@ -9,6 +9,18 @@ import com.crave.crave_backend.dto.out.RestaurantListViewOutDTO;
 import com.crave.crave_backend.entity.Restaurant;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
+	
+	@Query("""
+	        SELECT new com.crave.crave_backend.dto.out.RestaurantListViewOutDTO(
+	            i.id,
+	            i.name,
+	            i.cityName
+	        )
+	        FROM Restaurant i
+	        WHERE i.userId = :userId
+	        ORDER BY i.id ASC
+	    """)
+	List<RestaurantListViewOutDTO> getRestaurantsByUserId(@Param("userId") Long userId);
 		
 	boolean existsByUserId(Long userId);
 	
