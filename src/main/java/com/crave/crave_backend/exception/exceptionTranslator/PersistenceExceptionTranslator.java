@@ -56,8 +56,8 @@ public final class PersistenceExceptionTranslator {
 	}
 	
 	public static EntityConflictException translateMenuCategoryDataIntegrityViolation(
-			DataIntegrityViolationException ex, String categoryName) {
-		String info = ex.getMostSpecificCause().toString().toLowerCase();
+			DataIntegrityViolationException dataIntegrityViolationException, String categoryName) {
+		String info = dataIntegrityViolationException.getMostSpecificCause().toString().toLowerCase();
 		List<String> messageList = new ArrayList<>();
 		List<String> conflictingFieldsList = new ArrayList<>();
 

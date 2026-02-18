@@ -9,4 +9,6 @@ public interface DatabaseConstraintNames {
 	String UNIQUE_NAME = "uniquenameconstraintcrave";
 	
 	String UNIQUE_CATEGORY_NAMES = "uniquerestaurantidandcategoryname";
+	
+	String UNIQUE_MENU_ITEM_NAME = "uniquemenucategoryidandmenuitemname";
 }
