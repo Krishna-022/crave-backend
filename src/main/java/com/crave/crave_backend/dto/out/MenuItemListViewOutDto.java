@@ -55,7 +55,7 @@ public class MenuItemListViewOutDto {
 		this.price = price;
 	}
 
-	public String getimageURL() {
+	public String getImageURL() {
 		return imageURL;
 	}
 

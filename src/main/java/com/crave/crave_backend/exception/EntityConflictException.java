@@ -13,7 +13,6 @@ public class EntityConflictException extends RuntimeException {
 	private String logMessage;
 
 	public EntityConflictException(List<String> messageList, List<String> conflictingFieldsList, String logMessage) {
-		super();
 		this.messageList = messageList;
 		this.conflictingFieldsList = conflictingFieldsList;
 		this.logMessage = logMessage;
@@ -33,9 +32,6 @@ public class EntityConflictException extends RuntimeException {
 
 	public void setConflictingFieldsList(List<String> ConflictingFieldsList) {
 		this.conflictingFieldsList = ConflictingFieldsList;
-	}
-
-	public EntityConflictException() {
 	}
 
 	public List<String> getMessageList() {

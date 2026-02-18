@@ -10,6 +10,8 @@ import com.crave.crave_backend.entity.MenuItem;
 
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 	
+	boolean existsByMenuCategoryIdAndNameIgnoreCase(Long menuCategoryId, String name);
+	
 	@Query("SELECT r.image FROM MenuItem r WHERE r.id = :menuItemId")
     byte[] findMenuItemImageById(@Param("menuItemId") Long menuItemId);
 	

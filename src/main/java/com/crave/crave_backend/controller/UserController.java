@@ -13,14 +13,14 @@ import com.crave.crave_backend.constant.SuccessMessageConstants;
 import com.crave.crave_backend.dto.in.RegisterUserInDto;
 import com.crave.crave_backend.dto.out.MessageOutDto;
 import com.crave.crave_backend.service.UserService;
-import com.crave.crave_backend.validation.UserValidation;
+import com.crave.crave_backend.validation.UserValidator;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(ApiPathConstants.User.BASE)
 public class UserController {
 	
-	private final UserValidation userValidation;
+	private final UserValidator userValidator;
 
 	private final UserService userService;
 	
@@ -30,14 +30,14 @@ public class UserController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public MessageOutDto registerUser(@Valid @RequestBody RegisterUserInDto registerUserInDto) {
 		log.info("event=User registration request received");
-		userValidation.validateRegistrationContactNumberAndEmail(registerUserInDto.getContactNumber(), registerUserInDto.getEmail());
+		userValidator.validateRegistrationContactNumberAndEmail(registerUserInDto.getContactNumber(), registerUserInDto.getEmail());
 		Long userId = userService.registerUser(registerUserInDto);
 		log.info("event=Registration successful, userId={}", userId);
 		return new MessageOutDto(SuccessMessageConstants.REGISTRATION_SUCCESSFUL);
 	}
 
-	public UserController(UserValidation userValidation, UserService userService) {
-		this.userValidation = userValidation;
+	public UserController(UserValidator userValidator, UserService userService) {
+		this.userValidator = userValidator;
 		this.userService = userService;
 	}
 }

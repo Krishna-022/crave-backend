@@ -5,14 +5,21 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.crave.crave_backend.constant.DatabaseConstraintNames;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Digits;
 
 @Entity
+@Table(uniqueConstraints = {
+		@UniqueConstraint(name = DatabaseConstraintNames.UNIQUE_MENU_ITEM_NAME, columnNames = {"menu_category_id", "name" }) })
 public class MenuItem {
 
 	@Id
@@ -28,10 +35,10 @@ public class MenuItem {
 	@Column(nullable = false)
 	@Digits(integer = 6, fraction = 2)
 	private BigDecimal price;
-	
+
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String description;
-	
+
 	@Column(columnDefinition = "BYTEA")
 	private byte[] image;
 

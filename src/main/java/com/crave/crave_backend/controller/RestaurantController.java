@@ -24,8 +24,8 @@ import com.crave.crave_backend.dto.out.MessageOutDto;
 import com.crave.crave_backend.dto.out.RestaurantListViewOutDTO;
 import com.crave.crave_backend.service.MenuCategoryService;
 import com.crave.crave_backend.service.RestaurantService;
-import com.crave.crave_backend.validation.MenuCategoryValidation;
-import com.crave.crave_backend.validation.RestaurantValidation;
+import com.crave.crave_backend.validation.MenuCategoryValidator;
+import com.crave.crave_backend.validation.RestaurantValidator;
 import jakarta.validation.Valid;
 
 @RestController
@@ -34,11 +34,11 @@ public class RestaurantController {
 
 	private final RestaurantService restaurantService;
 
-	private final RestaurantValidation restaurantValidation;
+	private final RestaurantValidator restaurantValidator;
 
 	private final MenuCategoryService menuCategoryService;
 
-	private final MenuCategoryValidation menuCategoryValidation;
+	private final MenuCategoryValidator menuCategoryValidator;
 
 	private final Logger log = LoggerFactory.getLogger(RestaurantController.class);
 
@@ -61,7 +61,7 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public MessageOutDto registerRestaurant(@Valid @ModelAttribute RegisterRestaurantInDto registerRestaurantInDto) {
 		log.info("event=Restaurant registration request received, userId={}", SecurityUtils.getCurrentUserId());
-		List<byte[]> validatedImages = restaurantValidation.validateRestaurantRegistrationDetails(registerRestaurantInDto);
+		List<byte[]> validatedImages = restaurantValidator.validateRestaurantRegistrationDetails(registerRestaurantInDto);
 		return restaurantService.registerRestaurant(registerRestaurantInDto, validatedImages);
 	}
 
@@ -85,14 +85,14 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public MessageOutDto createMenuCategory(@PathVariable Long restaurantId, @Valid @ModelAttribute CreateMenuCategoryInDto createMenuCategoryInDto) {
 		log.info("event=Request received to create menu category, restaurantId={}, userId={}", restaurantId, SecurityUtils.getCurrentUserId());
-		byte[] validatedImage = menuCategoryValidation.validateCreateMenuCategoryRequest(restaurantId, createMenuCategoryInDto);
+		byte[] validatedImage = menuCategoryValidator.validateCreateMenuCategoryRequest(restaurantId, createMenuCategoryInDto);
 		return menuCategoryService.createMenuCategory(restaurantId, createMenuCategoryInDto, validatedImage);
 	}
 
-	public RestaurantController(RestaurantService restaurantService, RestaurantValidation restaurantValidation, MenuCategoryService menuCategoryService, MenuCategoryValidation menuCategoryValidation) {
+	public RestaurantController(RestaurantService restaurantService, RestaurantValidator restaurantValidator, MenuCategoryService menuCategoryService, MenuCategoryValidator menuCategoryValidator) {
 		this.restaurantService = restaurantService;
-		this.restaurantValidation = restaurantValidation;
+		this.restaurantValidator = restaurantValidator;
 		this.menuCategoryService = menuCategoryService;
-		this.menuCategoryValidation = menuCategoryValidation;
+		this.menuCategoryValidator = menuCategoryValidator;
 	}
 }
