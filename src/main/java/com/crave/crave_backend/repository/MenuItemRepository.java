@@ -39,4 +39,6 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 			    ORDER BY i.name ASC
 			""")
 	List<MenuItemListViewOutDto> findByCategory(@Param("menuCategoryId") Long menuCategoryId);
+	
+	Optional<MenuItem> findById(Long menuItemId);
 }

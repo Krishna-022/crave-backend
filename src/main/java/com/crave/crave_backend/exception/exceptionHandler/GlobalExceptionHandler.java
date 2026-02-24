@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.dto.out.ErrorResponseOutDto;
+import com.crave.crave_backend.exception.CartLimitExceededException;
 import com.crave.crave_backend.exception.EntityConflictException;
 import com.crave.crave_backend.exception.EntityNotFoundException;
 import com.crave.crave_backend.exception.ExpiredRefreshJwtException;
@@ -34,6 +35,13 @@ public class GlobalExceptionHandler {
 				entityConflictException.getConflictingFieldsList());
 		return ResponseEntity.status(HttpStatus.CONFLICT)
 				.body(new ErrorResponseOutDto(entityConflictException.getMessageList()));
+	}
+	
+	@ExceptionHandler(CartLimitExceededException.class)
+	public ResponseEntity<ErrorResponseOutDto> handleCartLimitExceededException(CartLimitExceededException cartLimitExceededException) {
+		log.warn("event=Cart creation failed, reason={}", cartLimitExceededException.getMessage());
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+				.body(new ErrorResponseOutDto(List.of(cartLimitExceededException.getMessage())));
 	}
 	
 	@ExceptionHandler(BadCredentialsException.class)

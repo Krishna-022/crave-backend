@@ -4,13 +4,22 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import com.crave.crave_backend.constant.DatabaseConstraintNames;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(
+	            name = DatabaseConstraintNames.UNIQUE_CART,
+	            columnNames = {"user_id", "restaurant_id"}
+	        )
+	    }
+)
 public class Cart {
 
 	@Id
@@ -22,6 +31,17 @@ public class Cart {
 
 	@Column(nullable = false)
 	private Long restaurantId;
+	
+	@Column(nullable = false)
+	private Integer itemCount;
+
+	public Integer getItemCount() {
+		return itemCount;
+	}
+
+	public void setItemCount(Integer itemCount) {
+		this.itemCount = itemCount;
+	}
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -61,10 +81,11 @@ public class Cart {
 	public Cart() {
 	}
 
-	public Cart(Long userId, Long restaurantId) {
+	public Cart(Long userId, Long restaurantId, Integer itemCount) {
 		super();
 		this.userId = userId;
 		this.restaurantId = restaurantId;
+		this.itemCount = itemCount;
 	}
 
 	@Override

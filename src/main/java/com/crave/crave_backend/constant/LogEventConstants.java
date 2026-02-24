@@ -15,4 +15,6 @@ public interface LogEventConstants {
 	String UNAUTHORIZED_ACCESS = "UserId=%s tried to access %sId=%s";
 	
 	String FAILED_TO_CREATE_MENU_ITEM = "Failed to create menu item";
+	
+	String CART_UPDATE_FAILED = "Cart update failed";
 }
