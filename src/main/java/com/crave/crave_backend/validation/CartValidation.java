@@ -42,7 +42,7 @@ public class CartValidation {
 					);
 		}
 		
-		if (menuCategoryOptional.get().getRestaurantId() != restaurantId) {
+		if (!menuCategoryOptional.get().getRestaurantId().equals(restaurantId)) {
 			String entity = Restaurant.class.getSimpleName();
 			throw new EntityNotFoundException(
 					LogEventConstants.CART_UPDATE_FAILED,

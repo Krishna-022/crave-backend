@@ -11,7 +11,6 @@ public class UnauthorizedException extends RuntimeException {
 	private String unauthorizedEvent;
 	
 	public UnauthorizedException(String message, String logEvent, String unauthorizedEvent) {
-		super();
 		this.message = message;
 		this.logEvent = logEvent;
 		this.unauthorizedEvent = unauthorizedEvent;

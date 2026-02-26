@@ -56,9 +56,12 @@ public class MenuCategoryService {
 			String entity = Restaurant.class.getSimpleName();
 			throw new EntityNotFoundException(LogEventConstants.FAILED_TO_CREATE_MENU_CATEGORY, entity, restaurantId, String.format(ErrorMessageConstants.ENTITY_NOT_FOUND, entity));
 		}
-		
-		if (restaurantOptional.get().getUserId() != SecurityUtils.getCurrentUserId()) {
-			throw new UnauthorizedException(ErrorMessageConstants.UNAUTHORIZED, LogEventConstants.FAILED_TO_CREATE_MENU_CATEGORY, String.format(LogEventConstants.UNAUTHORIZED_ACCESS, SecurityUtils.getCurrentUserId(), Restaurant.class.getSimpleName(), restaurantOptional.get().getUserId()));
+		Restaurant restaurant = restaurantOptional.get();
+		if (!restaurant.getUserId().equals(SecurityUtils.getCurrentUserId())) {
+			Long userId = SecurityUtils.getCurrentUserId();
+			throw new UnauthorizedException(ErrorMessageConstants.UNAUTHORIZED, 
+					LogEventConstants.FAILED_TO_CREATE_MENU_CATEGORY, 
+					String.format(LogEventConstants.UNAUTHORIZED_ACCESS, userId, Restaurant.class.getSimpleName(), restaurant.getId()));
 		}
 
 		MenuCategory menuCategory = new MenuCategory(restaurantId, createMenuCategoryInDto.getCategoryName(), 1);

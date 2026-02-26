@@ -35,4 +35,6 @@ public interface ErrorMessageConstants {
 	String IMAGE_REQUIRED = "Image is required";
 	
 	String CART_LIMIT_EXCEEDED = "Cart limit exceeded";
+	
+	String AUTHORIZATION_FAILED = "Authorization failed";
 }

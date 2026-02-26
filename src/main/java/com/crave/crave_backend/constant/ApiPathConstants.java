@@ -49,6 +49,13 @@ public final class ApiPathConstants {
 		public static final String MENU_ITEM_IMAGE = BY_ID + "/image";
 	}
 	
+	public static final class Cart {
+		
+		public static final String BASE = "/cart";
+		
+		public static final String BY_ID = "/{cartId}";
+	}
+	
 	public static final class PublicApiRoutes {
 		
 		public static final String REGISTER_USER = User.BASE;
