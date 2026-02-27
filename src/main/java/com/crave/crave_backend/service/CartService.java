@@ -38,7 +38,7 @@ public class CartService {
 	
 	@Transactional
 	public CartViewOutDto getCart(Long cartId) {
-		 Optional<Cart> cartOptional = cartRepository.findAllByIdForUpdate(cartId);
+		 Optional<Cart> cartOptional = cartRepository.findByIdForUpdate(cartId);
 		 
 		 if (cartOptional.isEmpty()) {
 			 String entity = Cart.class.getSimpleName();

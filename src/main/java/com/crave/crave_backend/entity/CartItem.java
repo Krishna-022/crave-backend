@@ -84,6 +84,26 @@ public class CartItem {
 		this.quantity = quantity;
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public String getMenuItemName() {
+		return menuItemName;
+	}
+
+	public void setMenuItemName(String menuItemName) {
+		this.menuItemName = menuItemName;
+	}
+
+	public BigDecimal getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(BigDecimal unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+
 	public CartItem(Long cartId, Long menuItemId, String menuItemName, BigDecimal unitPrice, Integer quantity) {
 		this.cartId = cartId;
 		this.menuItemId = menuItemId;
