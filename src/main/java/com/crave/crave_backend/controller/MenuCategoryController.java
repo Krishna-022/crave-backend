@@ -16,7 +16,7 @@ import com.crave.crave_backend.dto.out.MenuItemListViewOutDto;
 import com.crave.crave_backend.dto.out.MessageOutDto;
 import com.crave.crave_backend.mapper.MenuItemMapper;
 import com.crave.crave_backend.service.MenuItemService;
-import com.crave.crave_backend.validation.MenuItemValidation;
+import com.crave.crave_backend.validation.MenuItemValidator;
 import jakarta.validation.Valid;
 
 @RestController
@@ -25,7 +25,7 @@ public class MenuCategoryController {
 	
 	private final MenuItemService menuItemService;
 		
-	private final MenuItemValidation menuItemValidation;
+	private final MenuItemValidator menuItemValidator;
 	
 	private final Logger log = LoggerFactory.getLogger(MenuCategoryController.class);
 
@@ -38,12 +38,12 @@ public class MenuCategoryController {
 	@PostMapping(ApiPathConstants.MenuCategory.CATEGORY_ITEMS)
 	public MessageOutDto createMenuItem(@PathVariable Long menuCategoryId, @Valid @ModelAttribute CreateMenuItemInDto createMenuItemInDto) {
 		log.info("event=request received to create new menu item, UserId={}, menucategoryId={}", SecurityUtils.getCurrentUserId(), menuCategoryId);
-		byte[] validatedImage = menuItemValidation.validateCreateMenuItemRequest(menuCategoryId, createMenuItemInDto);		
+		byte[] validatedImage = menuItemValidator.validateCreateMenuItemRequest(menuCategoryId, createMenuItemInDto);		
 		return menuItemService.createMenuItem(MenuItemMapper.toEntity(menuCategoryId, createMenuItemInDto, validatedImage));
 	}
 
-	public MenuCategoryController(MenuItemService menuItemService, MenuItemValidation menuItemValidation) {
+	public MenuCategoryController(MenuItemService menuItemService, MenuItemValidator menuItemValidator) {
 		this.menuItemService = menuItemService;
-		this.menuItemValidation = menuItemValidation;
+		this.menuItemValidator = menuItemValidator;
 	}
 }

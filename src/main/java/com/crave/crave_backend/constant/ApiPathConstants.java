@@ -28,7 +28,7 @@ public final class ApiPathConstants {
 		
 		public static final String RESTAURANT_IMAGE = BY_ID + "/image";
 				
-		public static final String CART = BY_ID + "/cart/cart-item/{menuItemId}";
+		public static final String UPDATE_CART = BY_ID + "/cart/cart-item/{menuItemId}";
 	}
 	
 	public static final class MenuCategory {

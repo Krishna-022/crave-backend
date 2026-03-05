@@ -2,18 +2,22 @@ package com.crave.crave_backend.validation;
 
 import java.util.Optional;
 import org.springframework.stereotype.Component;
+
+import com.crave.crave_backend.config.security.SecurityUtils;
 import com.crave.crave_backend.constant.EntityAndFieldConstants;
 import com.crave.crave_backend.constant.ErrorMessageConstants;
 import com.crave.crave_backend.constant.LogEventConstants;
+import com.crave.crave_backend.entity.Cart;
 import com.crave.crave_backend.entity.MenuCategory;
 import com.crave.crave_backend.entity.MenuItem;
 import com.crave.crave_backend.entity.Restaurant;
 import com.crave.crave_backend.exception.EntityNotFoundException;
+import com.crave.crave_backend.exception.UnauthorizedException;
 import com.crave.crave_backend.repository.MenuCategoryRepository;
 import com.crave.crave_backend.repository.MenuItemRepository;
 
 @Component
-public class CartValidation {
+public class CartValidator {
 	
 	private final MenuCategoryRepository menuCategoryRepository;
 	
@@ -52,8 +56,27 @@ public class CartValidation {
 		}
 		return menuItem;
 	}
+	
+	public Cart validateCartOptional(Optional<Cart> cartOptional, Long cartId) {
+		if (cartOptional.isEmpty()) {
+			 String entity = Cart.class.getSimpleName();
+			 String message = String.format(ErrorMessageConstants.ENTITY_NOT_FOUND, entity);
+			 throw new EntityNotFoundException(message
+					 , entity, cartId, message);
+		}
+		Cart cart = cartOptional.get();
+		Long userId = SecurityUtils.getCurrentUserId();
+		if (!cart.getUserId().equals(userId)) {
+			String entity = Cart.class.getSimpleName();
+			throw new UnauthorizedException(
+					 ErrorMessageConstants.UNAUTHORIZED,
+					 ErrorMessageConstants.AUTHORIZATION_FAILED,
+					 String.format(LogEventConstants.UNAUTHORIZED_ACCESS, userId, entity, cart.getUserId()));
+		}
+		return cartOptional.get();
+	}
 
-	public CartValidation(MenuCategoryRepository menuCategoryRepository, MenuItemRepository menuItemRepository) {
+	public CartValidator(MenuCategoryRepository menuCategoryRepository, MenuItemRepository menuItemRepository) {
 		super();
 		this.menuCategoryRepository = menuCategoryRepository;
 		this.menuItemRepository = menuItemRepository;

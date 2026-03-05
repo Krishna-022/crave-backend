@@ -97,8 +97,9 @@ public class CartItem {
 
 	@Override
 	public String toString() {
-		return "CartItem [cartId=" + cartId + ", menuItemId=" + menuItemId + ", quantity=" + quantity
-				+ "]";
+		return "CartItem [cartId=" + cartId + ", menuItemId=" + menuItemId + ", menuItemName=" + menuItemName
+				+ ", unitPrice=" + unitPrice + ", quantity=" + quantity + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
 	}
 
 	@Override

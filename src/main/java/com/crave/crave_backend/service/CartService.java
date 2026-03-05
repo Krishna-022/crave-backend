@@ -22,10 +22,9 @@ import com.crave.crave_backend.entity.CartItem;
 import com.crave.crave_backend.entity.MenuItem;
 import com.crave.crave_backend.exception.CartLimitExceededException;
 import com.crave.crave_backend.exception.EntityConflictException;
-import com.crave.crave_backend.exception.EntityNotFoundException;
-import com.crave.crave_backend.exception.UnauthorizedException;
 import com.crave.crave_backend.repository.CartItemRepository;
 import com.crave.crave_backend.repository.CartRepository;
+import com.crave.crave_backend.validation.CartValidator;
 
 @Service
 public class CartService {
@@ -33,28 +32,15 @@ public class CartService {
 	private final CartRepository cartRepository;
 	
 	private final CartItemRepository cartItemRepository;
+	
+	private final CartValidator cartValidator;
 		
 	private final Logger log = LoggerFactory.getLogger(CartService.class);
 	
 	@Transactional
 	public CartViewOutDto getCart(Long cartId) {
 		 Optional<Cart> cartOptional = cartRepository.findAllByIdForUpdate(cartId);
-		 
-		 if (cartOptional.isEmpty()) {
-			 String entity = Cart.class.getSimpleName();
-			 String message = String.format(ErrorMessageConstants.ENTITY_NOT_FOUND, entity);
-			 throw new EntityNotFoundException(message
-					 , entity, cartId, message);
-		 }
-		 Cart cart = cartOptional.get();
-		 Long userId = SecurityUtils.getCurrentUserId();
-		 if (!cart.getUserId().equals(userId)) {
-			 String entity = Cart.class.getSimpleName();
-			 throw new UnauthorizedException(
-					 ErrorMessageConstants.UNAUTHORIZED,
-					 ErrorMessageConstants.AUTHORIZATION_FAILED,
-					 String.format(LogEventConstants.UNAUTHORIZED_ACCESS, userId, entity, cart.getUserId()));
-		 }
+		 cartValidator.validateCartOptional(cartOptional, cartId);
 		 List<CartItemViewOutDto> cartItemsList = cartItemRepository.findCartItemsByCartId(cartId);
 		 
 		 BigDecimal totalOrderPrice = BigDecimal.ZERO;
@@ -85,7 +71,7 @@ public class CartService {
 			}
 			Cart cart = cartOptional.get();
 			Long cartId = cart.getId();
-			int deleteCount = cartItemRepository.deleteByCartIdAndMenuItemId(cartId, menuItem.getId());
+			Integer deleteCount = cartItemRepository.deleteByCartIdAndMenuItemId(cartId, menuItem.getId());
 			
 			if (deleteCount == 0) {
 				log.warn("event=Cart item not found and qunatity received=0");
@@ -147,8 +133,9 @@ public class CartService {
 		return new MessageOutDto(SuccessMessageConstants.CART_UPDATED);
 	}
 
-	public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository) {
+	public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository, CartValidator cartValidator) {
 		this.cartRepository = cartRepository;
 		this.cartItemRepository = cartItemRepository;
+		this.cartValidator = cartValidator;
 	}
 }

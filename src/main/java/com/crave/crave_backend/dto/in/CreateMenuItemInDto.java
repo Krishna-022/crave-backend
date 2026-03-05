@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Size;
 public class CreateMenuItemInDto {
 
 	@NotBlank(message = "Menu item name is required")
-	@Pattern(regexp = "^[A-Za-z][A-Za-z0-9 ]{1,48}[A-Za-z0-9]$", message = "Menu item name must be 3-50 characters, letters and numbers only")
+	@Pattern(regexp = "^[A-Za-z][A-Za-z0-9 ]{1,48}[A-Za-z0-9]$", message = "Menu item name must be 3-50 characters long, start with a letter, contain only letters, numbers, and spaces, and cannot end with a space")
 	private String name;
 
 	@NotBlank(message = "Menu item description is required")
@@ -28,27 +28,27 @@ public class CreateMenuItemInDto {
 	private MultipartFile menuItemImage;
 
 	public String getName() {
-	    return name;
+		return name;
 	}
 
 	public void setName(String name) {
-	    this.name = name;
+		this.name = name;
 	}
 
 	public String getDescription() {
-	    return description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-	    this.description = description;
+		this.description = description;
 	}
 
 	public BigDecimal getPrice() {
-	    return price;
+		return price;
 	}
 
 	public void setPrice(BigDecimal price) {
-	    this.price = price;
+		this.price = price;
 	}
 
 	public MultipartFile getMenuItemImage() {
