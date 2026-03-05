@@ -16,7 +16,7 @@ import com.crave.crave_backend.repository.RestaurantRepository;
 import jakarta.validation.Valid;
 
 @Component
-public class RestaurantValidation {
+public class RestaurantValidator {
 	
 	private final RestaurantRepository restaurantRepository;
 
@@ -85,7 +85,7 @@ public class RestaurantValidation {
         return validatedImage;
 	}
 
-	public RestaurantValidation(RestaurantRepository restaurantRepository) {
+	public RestaurantValidator(RestaurantRepository restaurantRepository) {
 		this.restaurantRepository = restaurantRepository;
 	}
 }

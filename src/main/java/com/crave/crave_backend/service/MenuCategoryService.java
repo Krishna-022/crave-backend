@@ -66,8 +66,8 @@ public class MenuCategoryService {
 		Long menuCategoryId;
 		try {
 			menuCategoryId = menuCategoryRepository.save(menuCategory).getId();
-		} catch (DataIntegrityViolationException ex) {
-			throw PersistenceExceptionTranslator.translateMenuCategoryDataIntegrityViolation(ex, createMenuCategoryInDto.getCategoryName());
+		} catch (DataIntegrityViolationException dataIntegrityViolationException) {
+			throw PersistenceExceptionTranslator.translateMenuCategoryDataIntegrityViolation(dataIntegrityViolationException, createMenuCategoryInDto.getCategoryName());
 		}
 
 		MenuItem menuItem = MenuItemMapper.toEntity(menuCategoryId, createMenuCategoryInDto, validatedMenuItemImage);

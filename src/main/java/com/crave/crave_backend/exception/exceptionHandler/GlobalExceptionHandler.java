@@ -78,11 +78,15 @@ public class GlobalExceptionHandler {
 			MethodArgumentNotValidException methodArgumentNotValidException) {
 		List<FieldError> allErrors = methodArgumentNotValidException.getFieldErrors();
 		List<String> messageList = new ArrayList<>();
-
+				
 		for (int i = 0; i < allErrors.size(); i++) {
 			FieldError err = allErrors.get(i);
-			String message = err.getDefaultMessage();
-			messageList.add(message);
+			if ("typeMismatch".equals(err.getCode()) || err.getCode().contains("typeMismatch")) {
+				messageList.add("Invalid request format");
+			} else {
+				String message = err.getDefaultMessage();
+				messageList.add(message);	
+			}
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseOutDto(messageList));
 	}

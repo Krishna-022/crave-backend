@@ -13,4 +13,6 @@ public interface LogEventConstants {
 	String FAILED_TO_CREATE_MENU_CATEGORY = "Failed to create menu category";
 	
 	String UNAUTHORIZED_ACCESS = "UserId=%s tried to access %sId=%s";
+	
+	String FAILED_TO_CREATE_MENU_ITEM = "Failed to create menu item";
 }
