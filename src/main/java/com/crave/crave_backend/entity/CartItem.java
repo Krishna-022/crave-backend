@@ -1,28 +1,47 @@
 package com.crave.crave_backend.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import com.crave.crave_backend.constant.DatabaseConstraintNames;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Digits;
 
 @Entity
+@Table(
+	    uniqueConstraints = {@UniqueConstraint(
+	            name = DatabaseConstraintNames.UNIQUE_CART_ITEM,
+	            columnNames = {"cart_id", "menu_item_id"}
+	        )
+	    }
+	)
 public class CartItem {
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 	@Column(nullable = false)
 	private Long cartId;
 
 	@Column(nullable = false)
 	private Long menuItemId;
-
+	
+	@Column(nullable = false)
+	private String menuItemName;
+	
+	@Column(nullable = false)
+	@Digits(integer = 6, fraction = 2)
+	private BigDecimal unitPrice;
+	
 	@Column(nullable = false)
 	private Integer quantity;
 
@@ -39,10 +58,6 @@ public class CartItem {
 
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public Long getCartId() {
@@ -68,11 +83,12 @@ public class CartItem {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-
-	public CartItem(Long cartId, Long menuItemId, Integer quantity) {
-		super();
+	
+	public CartItem(Long cartId, Long menuItemId, String menuItemName, BigDecimal unitPrice, Integer quantity) {
 		this.cartId = cartId;
 		this.menuItemId = menuItemId;
+		this.menuItemName = menuItemName;
+		this.unitPrice = unitPrice;
 		this.quantity = quantity;
 	}
 
@@ -81,13 +97,14 @@ public class CartItem {
 
 	@Override
 	public String toString() {
-		return "CartItem [id=" + id + ", cartId=" + cartId + ", menuItemId=" + menuItemId + ", quantity=" + quantity
-				+ "]";
+		return "CartItem [cartId=" + cartId + ", menuItemId=" + menuItemId + ", menuItemName=" + menuItemName
+				+ ", unitPrice=" + unitPrice + ", quantity=" + quantity + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cartId, createdAt, id, menuItemId, quantity, updatedAt);
+		return Objects.hash(cartId, createdAt, menuItemId, quantity, updatedAt);
 	}
 
 	@Override
@@ -100,7 +117,7 @@ public class CartItem {
 			return false;
 		CartItem other = (CartItem) obj;
 		return Objects.equals(cartId, other.cartId) && Objects.equals(createdAt, other.createdAt)
-				&& Objects.equals(id, other.id) && Objects.equals(menuItemId, other.menuItemId)
+				&& Objects.equals(menuItemId, other.menuItemId)
 				&& Objects.equals(quantity, other.quantity) && Objects.equals(updatedAt, other.updatedAt);
 	}
 }

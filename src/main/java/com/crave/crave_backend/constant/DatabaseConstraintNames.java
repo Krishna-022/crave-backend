@@ -8,7 +8,11 @@ public interface DatabaseConstraintNames {
 	
 	String UNIQUE_NAME = "uniquenameconstraintcrave";
 	
-	String UNIQUE_CATEGORY_NAMES = "uniquerestaurantidandcategoryname";
+	String UNIQUE_CATEGORY_NAMES = "uniquerestaurantidandcategorynamecrave";
 	
-	String UNIQUE_MENU_ITEM_NAME = "uniquemenucategoryidandmenuitemname";
+	String UNIQUE_MENU_ITEM_NAME = "uniquemenucategoryidandmenuitemnamecrave";
+	
+	String UNIQUE_CART = "uniquecartcrave";
+	
+	String UNIQUE_CART_ITEM = "uniquecartitemcrave";
 }

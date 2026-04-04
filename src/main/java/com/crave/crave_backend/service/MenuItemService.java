@@ -30,7 +30,7 @@ public class MenuItemService {
 	private final MenuItemRepository menuItemRepository;
 	
 	private final MenuCategoryRepository menuCategoryRepository;
-	
+
 	private final MenuCategoryValidator menuCategoryValidator;
 	
 	private final Logger log = LoggerFactory.getLogger(MenuItemService.class);

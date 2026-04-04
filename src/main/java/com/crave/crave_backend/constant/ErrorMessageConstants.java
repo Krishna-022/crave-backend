@@ -6,6 +6,8 @@ public interface ErrorMessageConstants {
 	
 	String FIELD_CONFLICT = "%s '%s' already exist";
 	
+	String SINGLE_ENTITY_CONFLICT = "%s already exist";
+	
 	String RESTAURANT_LIMIT_EXCEEDED = "Restaurant registration limit exceeded";
 
 	String PERSISTENCE_UNKNOWN_EXCEPTION = "Server busy, please try again";
@@ -31,4 +33,8 @@ public interface ErrorMessageConstants {
 	String UNAUTHORIZED = "Authentication failed";
 
 	String IMAGE_REQUIRED = "Image is required";
+	
+	String CART_LIMIT_EXCEEDED = "Cart limit exceeded";
+	
+	String AUTHORIZATION_FAILED = "Authorization failed";
 }

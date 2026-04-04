@@ -1,0 +1,29 @@
+package com.crave.crave_backend.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.crave.crave_backend.dto.out.CartItemViewOutDto;
+import com.crave.crave_backend.entity.CartItem;
+
+public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+
+	@Query("""
+			    SELECT new com.crave.crave_backend.dto.out.CartItemViewOutDto(
+			        c.menuItemName,
+			        c.quantity,
+			        c.unitPrice
+			    )
+			    FROM CartItem c
+			    WHERE c.cartId = :cartId
+			""")
+	List<CartItemViewOutDto> findCartItemsByCartId(@Param("cartId") Long cartId);
+
+	Optional<CartItem> findByCartIdAndMenuItemId(Long cartId, Long menuItemId);
+
+	Integer deleteByCartIdAndMenuItemId(Long cartId, Long menuItemId);
+}
