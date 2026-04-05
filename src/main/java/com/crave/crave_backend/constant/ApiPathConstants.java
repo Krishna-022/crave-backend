@@ -54,6 +54,8 @@ public final class ApiPathConstants {
 		public static final String BASE = "/cart";
 		
 		public static final String BY_ID = "/{cartId}";
+		
+		public static final String ORDER = BY_ID + "/order";
 	}
 	
 	public static final class PublicApiRoutes {

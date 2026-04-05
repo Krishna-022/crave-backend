@@ -38,7 +38,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 			FROM Cart c
 			WHERE c.id = :cartId
 			""")
-	Optional<Cart> findAllByIdForUpdate(@Param("cartId") Long cartId);
+	Optional<Cart> findByIdForUpdate(@Param("cartId") Long cartId);
 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	@Query("""

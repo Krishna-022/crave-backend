@@ -39,7 +39,7 @@ public class CartService {
 	
 	@Transactional
 	public CartViewOutDto getCart(Long cartId) {
-		 Optional<Cart> cartOptional = cartRepository.findAllByIdForUpdate(cartId);
+		 Optional<Cart> cartOptional = cartRepository.findByIdForUpdate(cartId);
 		 cartValidator.validateCartOptional(cartOptional, cartId);
 		 List<CartItemViewOutDto> cartItemsList = cartItemRepository.findCartItemsByCartId(cartId);
 		 

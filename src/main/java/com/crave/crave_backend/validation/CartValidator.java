@@ -57,6 +57,23 @@ public class CartValidator {
 		return menuItem;
 	}
 	
+	public Cart validateCartForOrder(Optional<Cart> cartOptional, Long cartId, Long userId) {
+		
+		if (cartOptional.isEmpty()) {
+			String entity = Cart.class.getSimpleName();
+			String message = String.format(ErrorMessageConstants.ENTITY_NOT_FOUND, entity);
+			throw new EntityNotFoundException(message, entity, cartId, message);
+		}
+		Cart cart = cartOptional.get();
+		if (!cart.getUserId().equals(userId)) {
+			String entity = Cart.class.getSimpleName();
+			throw new UnauthorizedException(ErrorMessageConstants.UNAUTHORIZED,
+					ErrorMessageConstants.AUTHORIZATION_FAILED,
+					String.format(LogEventConstants.UNAUTHORIZED_ACCESS, userId, entity, cart.getUserId()));
+		}
+		return cart;
+	}
+	
 	public Cart validateCartOptional(Optional<Cart> cartOptional, Long cartId) {
 		if (cartOptional.isEmpty()) {
 			 String entity = Cart.class.getSimpleName();

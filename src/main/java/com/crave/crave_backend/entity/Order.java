@@ -1,7 +1,6 @@
 package com.crave.crave_backend.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,12 +30,11 @@ public class Order {
 	@Column(nullable = false)
 	private Long restaurantId;
 
-	@Column(nullable = false)
 	private Long userAddressId;
 
 	@Column(nullable = false)
 	@Digits(integer = 7, fraction = 2)
-	private BigDecimal totalPrice; // Floating point (float/double) introduces rounding errors
+	private BigDecimal totalPrice; 
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -93,16 +91,14 @@ public class Order {
 		this.orderState = orderState;
 	}
 
-	public Order(Long userId, Long restaurantId, BigDecimal totalPrice, LocalDate date, OrderState orderState) {
-		super();
+	public Order(Long userId, Long restaurantId, BigDecimal totalPrice, OrderState orderState) {
 		this.userId = userId;
 		this.restaurantId = restaurantId;
 		this.totalPrice = totalPrice;
 		this.orderState = orderState;
 	}
 
-	public Order() {
-	}
+	public Order() {}
 
 	@Override
 	public String toString() {

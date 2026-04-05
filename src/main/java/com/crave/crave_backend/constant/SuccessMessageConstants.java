@@ -9,4 +9,6 @@ public interface SuccessMessageConstants {
 	String MENU_ITEM_CREATED = "Menu item created";
 	
 	String CART_UPDATED = "Cart updated";
+	
+	String ORDER_PLACED = "Order Placed";
 }
