@@ -29,9 +29,9 @@ import com.crave.crave_backend.entity.MenuItem;
 import com.crave.crave_backend.service.CartService;
 import com.crave.crave_backend.service.MenuCategoryService;
 import com.crave.crave_backend.service.RestaurantService;
-import com.crave.crave_backend.validation.CartValidation;
-import com.crave.crave_backend.validation.MenuCategoryValidation;
-import com.crave.crave_backend.validation.RestaurantValidation;
+import com.crave.crave_backend.validation.CartValidator;
+import com.crave.crave_backend.validation.MenuCategoryValidator;
+import com.crave.crave_backend.validation.RestaurantValidator;
 import jakarta.validation.Valid;
 
 @RestController
@@ -40,15 +40,15 @@ public class RestaurantController {
 
 	private final RestaurantService restaurantService;
 
-	private final RestaurantValidation restaurantValidation;
+	private final RestaurantValidator restaurantValidator;
 
 	private final MenuCategoryService menuCategoryService;
-
-	private final MenuCategoryValidation menuCategoryValidation;
-	
-	private final CartValidation cartValidation;
-	
+		
 	private final CartService cartService;
+	
+	private final CartValidator cartValidator;
+	
+	private final MenuCategoryValidator menuCategoryValidator;
 
 	private final Logger log = LoggerFactory.getLogger(RestaurantController.class);
 
@@ -62,7 +62,7 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public MessageOutDto registerRestaurant(@Valid @ModelAttribute RegisterRestaurantInDto registerRestaurantInDto) {
 		log.info("event=Restaurant registration request received, userId={}", SecurityUtils.getCurrentUserId());
-		List<byte[]> validatedImages = restaurantValidation.validateRestaurantRegistrationDetails(registerRestaurantInDto);
+		List<byte[]> validatedImages = restaurantValidator.validateRestaurantRegistrationDetails(registerRestaurantInDto);
 		return restaurantService.registerRestaurant(registerRestaurantInDto, validatedImages);
 	}
 
@@ -86,24 +86,23 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public MessageOutDto createMenuCategory(@PathVariable Long restaurantId, @Valid @ModelAttribute CreateMenuCategoryInDto createMenuCategoryInDto) {
 		log.info("event=Request received to create menu category, restaurantId={}, userId={}", restaurantId, SecurityUtils.getCurrentUserId());
-		byte[] validatedImage = menuCategoryValidation.validateCreateMenuCategoryRequest(restaurantId, createMenuCategoryInDto);
+		byte[] validatedImage = menuCategoryValidator.validateCreateMenuCategoryRequest(restaurantId, createMenuCategoryInDto);
 		return menuCategoryService.createMenuCategory(restaurantId, createMenuCategoryInDto, validatedImage);
 	}
 	
-	@PutMapping(ApiPathConstants.Restaurant.CART)
-	@ResponseStatus(HttpStatus.OK)
+	@PutMapping(ApiPathConstants.Restaurant.UPDATE_CART)
 	public MessageOutDto updateCart(@PathVariable Long restaurantId, @PathVariable Long menuItemId, @RequestBody @Valid CartInDto cartInDto) {
 		log.info("event=Request received to update the cart, restaurantId={}, menuItemId={}, userId={}", restaurantId, menuItemId, SecurityUtils.getCurrentUserId());
-		MenuItem menuItem = cartValidation.validateCartUpdateRequest(menuItemId, restaurantId);
+		MenuItem menuItem = cartValidator.validateCartUpdateRequest(menuItemId, restaurantId);
 		return cartService.updateCart(cartInDto, menuItem, restaurantId);
 	}
 
-	public RestaurantController(RestaurantService restaurantService, RestaurantValidation restaurantValidation, MenuCategoryService menuCategoryService, MenuCategoryValidation menuCategoryValidation, CartValidation cartValidation, CartService cartService) {
+	public RestaurantController(RestaurantService restaurantService, RestaurantValidator restaurantValidator, MenuCategoryService menuCategoryService, MenuCategoryValidator menuCategoryValidator, CartValidator cartValidator, CartService cartService) {
 		this.restaurantService = restaurantService;
-		this.restaurantValidation = restaurantValidation;
+		this.restaurantValidator = restaurantValidator;
 		this.menuCategoryService = menuCategoryService;
-		this.menuCategoryValidation = menuCategoryValidation;
-		this.cartValidation = cartValidation;
 		this.cartService = cartService;
+		this.cartValidator = cartValidator;
+		this.menuCategoryValidator = menuCategoryValidator;
 	}
 }

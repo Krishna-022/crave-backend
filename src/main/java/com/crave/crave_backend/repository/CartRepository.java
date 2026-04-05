@@ -52,7 +52,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 
 	Optional<Cart> findByUserIdAndRestaurantId(Long userId, Long restaurantId);
 
-	int deleteByUserIdAndRestaurantId(Long userId, Long restaurantId);
+	Integer deleteByUserIdAndRestaurantId(Long userId, Long restaurantId);
 
 	void deleteById(Long id);
 }

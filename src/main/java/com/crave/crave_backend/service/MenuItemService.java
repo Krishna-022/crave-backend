@@ -22,6 +22,7 @@ import com.crave.crave_backend.exception.EntityConflictException;
 import com.crave.crave_backend.exception.EntityNotFoundException;
 import com.crave.crave_backend.repository.MenuCategoryRepository;
 import com.crave.crave_backend.repository.MenuItemRepository;
+import com.crave.crave_backend.validation.MenuCategoryValidator;
 
 @Service
 public class MenuItemService {
@@ -29,22 +30,15 @@ public class MenuItemService {
 	private final MenuItemRepository menuItemRepository;
 	
 	private final MenuCategoryRepository menuCategoryRepository;
+
+	private final MenuCategoryValidator menuCategoryValidator;
 	
 	private final Logger log = LoggerFactory.getLogger(MenuItemService.class);
 	
 	@Transactional
 	public MessageOutDto createMenuItem(MenuItem menuItem) {
 		Optional<MenuCategory> menuCategoryOptional = menuCategoryRepository.findByIdForUpdate(menuItem.getMenuCategoryId());
-		
-		if (menuCategoryOptional.isEmpty()) {
-			String entity = EntityAndFieldConstants.MENU_CATEGORY;
-			throw new EntityNotFoundException(
-					LogEventConstants.FAILED_TO_CREATE_MENU_ITEM,
-					entity,
-					menuItem.getMenuCategoryId(),
-					String.format(ErrorMessageConstants.ENTITY_NOT_FOUND, entity));
-		}
-		MenuCategory menuCategory = menuCategoryOptional.get();
+		MenuCategory menuCategory = menuCategoryValidator.validateMenuCategoryOptional(menuCategoryOptional, menuItem);
 		
 		Long menuItemId = 0L;
 		try {
@@ -94,8 +88,9 @@ public class MenuItemService {
 		return menuItems;
 	}
 
-	public MenuItemService(MenuItemRepository menuItemRepository, MenuCategoryRepository menuCategoryRepository) {
+	public MenuItemService(MenuItemRepository menuItemRepository, MenuCategoryRepository menuCategoryRepository, MenuCategoryValidator menuCategoryValidator) {
 		this.menuItemRepository = menuItemRepository;
 		this.menuCategoryRepository = menuCategoryRepository;
+		this.menuCategoryValidator = menuCategoryValidator;
 	}
 }

@@ -11,7 +11,7 @@ import com.crave.crave_backend.exception.EntityConflictException;
 import com.crave.crave_backend.repository.UserRepository;
 
 @Component
-public class UserValidation {
+public class UserValidator {
 	
 	private final UserRepository userRepository;
 	
@@ -38,7 +38,7 @@ public class UserValidation {
 		}
 	}
 
-	public UserValidation(UserRepository userRepository) {
+	public UserValidator(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}	
 }

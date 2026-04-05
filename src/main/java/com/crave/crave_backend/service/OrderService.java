@@ -20,7 +20,7 @@ import com.crave.crave_backend.repository.CartItemRepository;
 import com.crave.crave_backend.repository.CartRepository;
 import com.crave.crave_backend.repository.OrderItemRepository;
 import com.crave.crave_backend.repository.OrderRepository;
-import com.crave.crave_backend.validation.CartValidation;
+import com.crave.crave_backend.validation.CartValidator;
 
 @Component
 public class OrderService {
@@ -33,7 +33,7 @@ public class OrderService {
 
 	private final CartItemRepository cartItemRepository;
 	
-	private final CartValidation cartValidation;
+	private final CartValidator cartValidator;
 
 	private final Logger log = LoggerFactory.getLogger(OrderService.class);
 
@@ -41,7 +41,7 @@ public class OrderService {
 	public MessageOutDto placeOrder(Long cartId) {
 		Optional<Cart> cartOptional = cartRepository.findByIdForUpdate(cartId);
 		Long userId = SecurityUtils.getCurrentUserId();
-		Cart cart = cartValidation.validateCartForOrder(cartOptional, cartId, userId);
+		Cart cart = cartValidator.validateCartForOrder(cartOptional, cartId, userId);
 		List<CartItem> cartItemsList = cartItemRepository.findByCartIdForUpdate(cartId);
 		
 		BigDecimal totalOrderPrice = BigDecimal.ZERO;
@@ -68,11 +68,11 @@ public class OrderService {
 	}
 
 	public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
-			CartRepository cartRepository, CartItemRepository cartItemRepository, CartValidation cartValidation) {
+			CartRepository cartRepository, CartItemRepository cartItemRepository, CartValidator cartValidator) {
 		this.orderRepository = orderRepository;
 		this.orderItemRepository = orderItemRepository;
 		this.cartRepository = cartRepository;
 		this.cartItemRepository = cartItemRepository;
-		this.cartValidation = cartValidation;
+		this.cartValidator = cartValidator;
 	}
 }
