@@ -1,10 +1,19 @@
-# Crave
+# 🍽️ Crave
+
+![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-6DB33F?logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-Authentication-6DB33F?logo=springsecurity&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Auth-black?logo=jsonwebtokens&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-Build-C71A36?logo=apachemaven&logoColor=white)
 
 Crave is a backend system for a online food ordering platform. It covers the core backend flow for user and restaurant onboarding, JWT-based authentication, restaurant management, menu publishing, cart handling, and order placement.
 
 This repository is best understood as an engineering-focused portfolio project rather than a production-ready SaaS backend.
 
-## Overview
+---
+
+## 📖 Overview
 
 Crave focuses on the backend mechanics behind a food delivery or ordering system:
 
@@ -15,7 +24,9 @@ Crave focuses on the backend mechanics behind a food delivery or ordering system
 - Cart creation and updates
 - Order placement from cart state
 
-## Tech Stack
+---
+
+## 🧱 Tech Stack
 
 - Java 21
 - Spring Boot 4
@@ -24,6 +35,8 @@ Crave focuses on the backend mechanics behind a food delivery or ordering system
 - PostgreSQL
 - JJWT
 - Maven
+
+---
 
 ## Features Implemented
 
@@ -38,7 +51,9 @@ Crave focuses on the backend mechanics behind a food delivery or ordering system
 - Centralized validation and exception handling
 - Request correlation IDs in application logs
 
-## Architecture
+---
+
+## 🏗️ Architecture
 
 The project follows a layered backend structure:
 
@@ -53,7 +68,9 @@ The project follows a layered backend structure:
 
 This structure keeps the project readable and reasonably maintainable which is important for both team collaboration and long-term backend growth.
 
-## API Surface
+---
+
+## 🌐 API Surface
 
 Main endpoints currently available:
 
@@ -108,7 +125,10 @@ Main endpoints currently available:
 - `GET /menu-item/{menuItemId}/image`  
   Fetch the image associated with a menu item.
 
-## Core Domain
+---
+
+## 🧩 Core Domain
+
 The project models the following backend entities:
 
 - User
@@ -121,10 +141,14 @@ The project models the following backend entities:
 - OrderItem
 - RefreshToken
 
-## Project Status
+---
+
+## 🚦 Project Status
 
 Crave is a backend portfolio project that demonstrates the core building blocks of a transactional system. It is functionally complete for the main food-ordering workflow, while still leaving room for future production-grade additions.
 
-## Closing Note
+---
+
+## 📝 Closing Note
 
 This project is intended to showcase backend engineering fundamentals beyond basic CRUD. The focus is on clean architecture, secure authentication, domain modeling, validation, and maintainable design in a realistic application setting.
